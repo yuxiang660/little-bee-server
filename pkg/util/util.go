@@ -13,7 +13,7 @@ var (
 // NewTraceID generates a trace id which has pid and time.
 func NewTraceID() string {
 	return fmt.Sprintf(
-		"trace-id-%d-%s",
+		"pid-%d [start at %s]",
 		pid,
 		time.Now().Format(time.Stamp),
 	)
