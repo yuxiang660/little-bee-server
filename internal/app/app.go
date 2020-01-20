@@ -38,7 +38,7 @@ func handleError(err error) {
 }
 
 // Open starts the web application after initialization.
-// Open returns a function to close the web application.
+// Open returns a function to release resources of the web application.
 func Open(ctx context.Context, opts ...Option) func() {
 	var o options
 	for _, opt := range opts {
@@ -53,9 +53,15 @@ func Open(ctx context.Context, opts ...Option) func() {
 	releaseLogger, err := ConfigLogger()
 	handleError(err)
 
-	_, releaseContainer := BuildContainer()
+	container, releaseContainer := BuildContainer()
+
+	releaseHTTP := OpenHTTPServer(ctx, container)
 
 	return func() {
+		if releaseHTTP != nil {
+			releaseHTTP()
+		}
+
 		if releaseContainer != nil {
 			releaseContainer()
 		}

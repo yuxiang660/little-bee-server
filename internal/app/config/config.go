@@ -7,6 +7,7 @@ import (
 // Config defines the structure of all configurations in config file(./configs/config.toml).
 type Config struct {
 	RunMode     string      `toml:"run_mode"`
+	HTTP        HTTP        `toml:"http"`
 	Log         Log         `toml:"log"`
 	JWTAuth     JWTAuth     `toml:"jwt_auth"`
 	Gorm        Gorm        `toml:"gorm"`
@@ -46,6 +47,15 @@ func Global() *Config {
 	}
 
 	return global
+}
+
+// HTTP defines the structure of http configuration in config file.
+type HTTP struct {
+	Host            string `toml:"host"`
+	Port            int    `toml:"port"`
+	CertFile        string `toml:"cert_file"`
+	KeyFile         string `toml:"key_file"`
+	ShutdownTimeout int    `toml:"shutdown_timeout"`
 }
 
 // Log defines the structure of log configuration in config file.

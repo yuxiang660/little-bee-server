@@ -1,41 +1,54 @@
 # run mode (debug,test,release)
 run_mode = "debug"
 
-# Log Configuration
+# http configuration
+[http]
+# http ip address
+host = "0.0.0.0"
+# http port
+port = 10088
+# certification file for SSL
+cert_file = ""
+# certification key file for SSL
+key_file = ""
+# waiting time after http close (s)
+shutdown_timeout = 30
+
+# log configuration
 [log]
-# Log Level (1:fatal 2:error,3:warn,4:info,5:debug)
+# log level (1:fatal 2:error,3:warn,4:info,5:debug)
 level = 5
-# Log Format (supported format：text/json)
+# log format (supported format：text/json)
 format = "text"
-# Log Output (supported：stdout/stderr/file)
+# log output (supported：stdout/stderr/file)
 output = "stdout"
-# Log Filename for "file" Log Output
+# log filename for "file" Log Output
 output_file = "data/ginadmin.log"
 
-# User Authentication (jwt)
+# user authentication (jwt)
 [jwt_auth]
-# JWT Attribute (supported：HS512/HS384/HS512)
+# JWT attribute (supported：HS512/HS384/HS512)
 signing_method = "HS512"
-# JWT Attribute (supported: any string)
+# JWT attribute (supported: any string)
 signing_key = "GINADMIN"
-# Token Expired Time（Unit: second）
+# token expired Time（Unit: second）
 expired = 7200
 
-# gorm Configuration
+# gorm configuration
 [gorm]
-# Debug or not (true/false)
+# debug or not (true/false)
 debug = true
-# Database Type (supported：sqlite3)
+# database type (supported：sqlite3)
 db_type = "sqlite3"
-# Max lifetime for a connenction (s)
+# max lifetime for a connenction (s)
 max_lifetime = 7200
-# Max number of connections
+# max number of connections
 max_open_conns = 150
-# Max number of connections in the idle connection pool
+# max number of connections in the idle connection pool
 max_idle_conns = 50
 
-# sqlite Database Configuration
+# sqlite database configuration
 [sqlite3]
-# The path of sqlite database
+# path of sqlite database
 path = "data/ginadmin.db"
 

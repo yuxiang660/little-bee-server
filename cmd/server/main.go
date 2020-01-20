@@ -41,7 +41,7 @@ func main() {
 	ctx := logger.NewTraceIDContext(context.Background(), util.NewTraceID())
 	span := logger.GetStartSpanCall(ctx)
 
-	close := app.Open(ctx,
+	releaseAPP := app.Open(ctx,
 		app.SetConfigFile(configFile),
 		app.SetVersion(VERSION))
 
@@ -60,8 +60,8 @@ Loop:
 		}
 	}
 
-	if close != nil {
-		close()
+	if releaseAPP != nil {
+		releaseAPP()
 	}
 
 	span().Printf("Exit Service")
