@@ -7,7 +7,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/yuxiang660/little-bee-server/internal/app/config"
-	"github.com/yuxiang660/little-bee-server/pkg/store/gormstore"
+	"github.com/yuxiang660/little-bee-server/pkg/store"
 	"go.uber.org/dig"
 )
 
@@ -26,15 +26,15 @@ func InjectStore(container *dig.Container) (func(), error) {
 
 	gormCfg := cfg.Gorm
 
-	var opts []gormstore.Option
-	opts = append(opts, gormstore.SetDebug(gormCfg.Debug))
-	opts = append(opts, gormstore.SetDBType(gormCfg.DBType))
-	opts = append(opts, gormstore.SetDSN(dsn))
-	opts = append(opts, gormstore.SetMaxLifetime(gormCfg.MaxLifetime))
-	opts = append(opts, gormstore.SetMaxOpenConns(gormCfg.MaxOpenConns))
-	opts = append(opts, gormstore.SetMaxIdleConns(gormCfg.MaxIdleConns))
+	var opts []store.Option
+	opts = append(opts, store.SetDebug(gormCfg.Debug))
+	opts = append(opts, store.SetDBType(gormCfg.DBType))
+	opts = append(opts, store.SetDSN(dsn))
+	opts = append(opts, store.SetMaxLifetime(gormCfg.MaxLifetime))
+	opts = append(opts, store.SetMaxOpenConns(gormCfg.MaxOpenConns))
+	opts = append(opts, store.SetMaxIdleConns(gormCfg.MaxIdleConns))
 
-	store, err := gormstore.New(opts...)
+	store, err := store.New(opts...)
 	if err != nil {
 		return nil, err
 	}

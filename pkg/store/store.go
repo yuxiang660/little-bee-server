@@ -1,4 +1,4 @@
-package gormstore
+package store
 
 import (
 	"time"
