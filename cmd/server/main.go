@@ -14,9 +14,6 @@ import (
 	"github.com/yuxiang660/little-bee-server/pkg/util"
 )
 
-// VERSION indicates the version of the project.
-var VERSION = "0.1.0"
-
 var (
 	configFile string
 )
@@ -36,12 +33,10 @@ func main() {
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 
-	logger.SetVersion(VERSION)
 	ctx := logger.AddTraceIDToContext(context.Background(), util.NewTraceID())
 
 	releaseAPP := app.Open(ctx,
-		app.SetConfigFile(configFile),
-		app.SetVersion(VERSION))
+		app.SetConfigFile(configFile))
 
 Loop:
 	for {

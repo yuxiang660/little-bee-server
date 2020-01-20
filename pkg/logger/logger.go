@@ -16,15 +16,10 @@ const (
 	TraceIDKey = "trace_id"
 	SpanTitleKey = "span_tigle"
 	SpanFunctionKey = "span_function"
-	VersionKey = "version"
 )
 
 // TraceIDFunc gets trace id for logger.
 type TraceIDFunc func() string
-
-var (
-	version string
-)
 
 // SetLevel sets the logger level.
 // 1:fatal,2:error,3:warn,4:info,5:debug,6:trace.
@@ -47,11 +42,6 @@ func SetFormatter(format string) {
 // Supported output: stdout, stderr or file.
 func SetOutput(out io.Writer) {
 	logrus.SetOutput(out)
-}
-
-// SetVersion sets the project version to logger.
-func SetVersion(v string) {
-	version = v
 }
 
 type (
@@ -117,8 +107,6 @@ func StartSpan(ctx context.Context, opts ...SpanOption) *Entry {
 	}
 
 	fields := make(map[string]interface{})
-	
-	fields[VersionKey] = version
 
 	if v := getTraceID(ctx); v != ""{
 		fields[TraceIDKey] = v
