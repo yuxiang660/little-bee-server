@@ -129,6 +129,36 @@ func GetStartSpanCall(ctx context.Context, opts ...SpanOption) func() *Entry {
 	}
 }
 
+// Fatalf logs fatal message through a span logger.
+func Fatalf(ctx context.Context, format string, args ...interface{}) {
+	StartSpan(ctx).Fatalf(format, args...)
+}
+
+// Errorf logs error message through a span logger.
+func Errorf(ctx context.Context, format string, args ...interface{}) {
+	StartSpan(ctx).Errorf(format, args...)
+}
+
+// Debugf logs fatal message with a span logger.
+func Debugf(ctx context.Context, format string, args ...interface{}) {
+	StartSpan(ctx).Debugf(format, args...)
+}
+
+// Warnf logs warning message with a span logger.
+func Warnf(ctx context.Context, format string, args ...interface{}) {
+	StartSpan(ctx).Warnf(format, args...)
+}
+
+// Infof logs info level message with a span logger.
+func Infof(ctx context.Context, format string, args ...interface{}) {
+	StartSpan(ctx).Infof(format, args...)
+}
+
+// Printf logs info level message with a span logger(same as Infof).
+func Printf(ctx context.Context, format string, args ...interface{}) {
+	StartSpan(ctx).Printf(format, args...)
+}
+
 // Fatalf logs fatal message.
 func (e *Entry) Fatalf(format string, args ...interface{}) {
 	e.entry.Fatalf(format, args...)

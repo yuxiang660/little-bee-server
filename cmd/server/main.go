@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/yuxiang660/little-bee-server/internal/app"
 	"github.com/yuxiang660/little-bee-server/pkg/logger"
 	"github.com/yuxiang660/little-bee-server/pkg/util"
 )
@@ -40,6 +41,10 @@ func main() {
 	ctx := logger.NewTraceIDContext(context.Background(), util.NewTraceID())
 	span := logger.GetStartSpanCall(ctx)
 
+	close := app.Open(ctx,
+		app.SetConfigFile(configFile),
+		app.SetVersion(VERSION))
+
 Loop:
 	for {
 		sig := <-sc
@@ -53,6 +58,10 @@ Loop:
 		default:
 			break Loop
 		}
+	}
+
+	if close != nil {
+		close()
 	}
 
 	span().Printf("Exit Service")
