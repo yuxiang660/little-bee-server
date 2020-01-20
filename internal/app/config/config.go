@@ -8,6 +8,7 @@ import (
 type Config struct {
 	RunMode     string      `toml:"run_mode"`
 	Log         Log         `toml:"log"`
+	JWTAuth     JWTAuth     `toml:"jwt_auth"`
 }
 
 // Log defines the structure to store log configuration in config file.
@@ -16,6 +17,13 @@ type Log struct {
 	Format        string `toml:"format"`
 	Output        string `toml:"output"`
 	OutputFile    string `toml:"output_file"`
+}
+
+// JWTAuth defines the structure to store JWT Authentication configuration in config file.
+type JWTAuth struct {
+	SigningMethod string `toml:"signing_method"`
+	SigningKey    string `toml:"signing_key"`
+	Expired       int    `toml:"expired"`
 }
 
 var (

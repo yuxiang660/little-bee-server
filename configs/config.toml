@@ -11,3 +11,12 @@ format = "text"
 output = "stdout"
 # Log Filename for "file" Log Output
 output_file = "data/ginadmin.log"
+
+# User Authentication (jwt)
+[jwt_auth]
+# JWT Attribute (supported：HS512/HS384/HS512)
+signing_method = "HS512"
+# JWT Attribute (supported: any string)
+signing_key = "GINADMIN"
+# Token Expired Time（Unit: second）
+expired = 7200

@@ -5,7 +5,9 @@ import (
 	"os"
 
 	"github.com/yuxiang660/little-bee-server/internal/app/config"
+	"github.com/yuxiang660/little-bee-server/pkg/auth"
 	"github.com/yuxiang660/little-bee-server/pkg/logger"
+	"go.uber.org/dig"
 )
 
 type options struct {
@@ -52,9 +54,28 @@ func Open(ctx context.Context, opts ...Option) func() {
 	releaseLogger, err := ConfigLogger()
 	handleError(err)
 
+	_, releaseContainer := BuildContainer()
+
 	return func() {
+		if releaseContainer != nil {
+			releaseContainer()
+		}
+
 		if releaseLogger != nil {
 			releaseLogger()
 		}
 	}
+}
+
+// BuildContainer builds a dig container for dependency injection.
+func BuildContainer() (*dig.Container, func()) {
+	container := dig.New()
+
+	auther, err := NewAuther()
+	handleError(err)
+	_ = container.Provide(func() auth.Auther {
+		return auther
+	})
+
+	return container, nil
 }
