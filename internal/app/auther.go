@@ -4,12 +4,15 @@ import (
 	"github.com/yuxiang660/little-bee-server/internal/app/config"
 	"github.com/yuxiang660/little-bee-server/pkg/auth"
 	"github.com/yuxiang660/little-bee-server/pkg/auth/jwtauth"
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go"
+	"go.uber.org/dig"
 )
 
-// NewAuther creates an Auther based on configuration from clients.
-// Clients can set token expired time and so on.
-func NewAuther() (auth.Auther, error) {
+// InjectAuther injects an auther constructor to dig container.
+// InjectAuther returns a function to release auther resource. 
+// The auther will be construct based on configuration from clients.
+// For example, clients can set token expired time and so on.
+func InjectAuther(container *dig.Container) (func(), error) {
 	cfg := config.Global().JWTAuth
 
 	var opts []jwtauth.Option
@@ -33,5 +36,11 @@ func NewAuther() (auth.Auther, error) {
 	}
 	opts = append(opts, jwtauth.SetSigningMethod(method))
 
-	return jwtauth.New(opts...), nil
+	auther := jwtauth.New(opts...)
+
+	_ = container.Provide(func() auth.Auther {
+		return auther
+	})
+	
+	return nil, nil
 }

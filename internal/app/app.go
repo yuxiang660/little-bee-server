@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/yuxiang660/little-bee-server/internal/app/config"
-	"github.com/yuxiang660/little-bee-server/pkg/auth"
 	"github.com/yuxiang660/little-bee-server/pkg/logger"
 	"go.uber.org/dig"
 )
@@ -71,11 +70,12 @@ func Open(ctx context.Context, opts ...Option) func() {
 func BuildContainer() (*dig.Container, func()) {
 	container := dig.New()
 
-	auther, err := NewAuther()
+	releaseAuther, err := InjectAuther(container)
 	handleError(err)
-	_ = container.Provide(func() auth.Auther {
-		return auther
-	})
 
-	return container, nil
+	return container, func() {
+		if releaseAuther != nil {
+			releaseAuther()
+		}
+	}
 }
