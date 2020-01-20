@@ -20,3 +20,22 @@ signing_method = "HS512"
 signing_key = "GINADMIN"
 # Token Expired Time（Unit: second）
 expired = 7200
+
+# gorm Configuration
+[gorm]
+# Debug or not (true/false)
+debug = true
+# Database Type (supported：sqlite3)
+db_type = "sqlite3"
+# Max lifetime for a connenction (s)
+max_lifetime = 7200
+# Max number of connections
+max_open_conns = 150
+# Max number of connections in the idle connection pool
+max_idle_conns = 50
+
+# sqlite Database Configuration
+[sqlite3]
+# The path of sqlite database
+path = "data/ginadmin.db"
+

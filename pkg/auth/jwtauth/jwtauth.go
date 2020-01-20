@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/yuxiang660/little-bee-server/pkg/auth"
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go"
 )
 
 type options struct {

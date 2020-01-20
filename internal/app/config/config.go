@@ -4,26 +4,13 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-// Config defines the structure to store all configurations in config file(./configs/config.toml).
+// Config defines the structure of all configurations in config file(./configs/config.toml).
 type Config struct {
 	RunMode     string      `toml:"run_mode"`
 	Log         Log         `toml:"log"`
 	JWTAuth     JWTAuth     `toml:"jwt_auth"`
-}
-
-// Log defines the structure to store log configuration in config file.
-type Log struct {
-	Level         int    `toml:"level"`
-	Format        string `toml:"format"`
-	Output        string `toml:"output"`
-	OutputFile    string `toml:"output_file"`
-}
-
-// JWTAuth defines the structure to store JWT Authentication configuration in config file.
-type JWTAuth struct {
-	SigningMethod string `toml:"signing_method"`
-	SigningKey    string `toml:"signing_key"`
-	Expired       int    `toml:"expired"`
+	Gorm        Gorm        `toml:"gorm"`
+	Sqlite3     Sqlite3     `toml:"sqlite3"`
 }
 
 var (
@@ -59,4 +46,38 @@ func Global() *Config {
 	}
 
 	return global
+}
+
+// Log defines the structure of log configuration in config file.
+type Log struct {
+	Level         int    `toml:"level"`
+	Format        string `toml:"format"`
+	Output        string `toml:"output"`
+	OutputFile    string `toml:"output_file"`
+}
+
+// JWTAuth defines the structure of JWT Authentication configuration in config file.
+type JWTAuth struct {
+	SigningMethod string `toml:"signing_method"`
+	SigningKey    string `toml:"signing_key"`
+	Expired       int    `toml:"expired"`
+}
+
+// Gorm defines the structure of gorm configuration in config file.
+type Gorm struct {
+	Debug             bool   `toml:"debug"`
+	DBType            string `toml:"db_type"`
+	MaxLifetime       int    `toml:"max_lifetime"`
+	MaxOpenConns      int    `toml:"max_open_conns"`
+	MaxIdleConns      int    `toml:"max_idle_conns"`
+}
+
+// Sqlite3 defines the structure of sqlite3 configuration in config file.
+type Sqlite3 struct {
+	Path string `toml:"path"`
+}
+
+// DSN returns sqlite3 DSN string for database connenction. 
+func (a Sqlite3) DSN() string {
+	return a.Path
 }
