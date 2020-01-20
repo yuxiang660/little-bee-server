@@ -7,6 +7,15 @@ import (
 // Config defines the structure to store all configurations in config file(./configs/config.toml).
 type Config struct {
 	RunMode     string      `toml:"run_mode"`
+	Log         Log         `toml:"log"`
+}
+
+// Log defines the structure to store log configuration in config file.
+type Log struct {
+	Level         int    `toml:"level"`
+	Format        string `toml:"format"`
+	Output        string `toml:"output"`
+	OutputFile    string `toml:"output_file"`
 }
 
 var (

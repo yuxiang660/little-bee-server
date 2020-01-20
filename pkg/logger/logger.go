@@ -2,6 +2,8 @@ package logger
 
 import (
 	"context"
+	"io"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -28,6 +30,23 @@ var (
 // 1:fatal,2:error,3:warn,4:info,5:debug,6:trace.
 func SetLevel(level int) {
 	logrus.SetLevel(logrus.Level(level))
+}
+
+// SetFormatter sets the format of logger message.
+// Supported format: JSON or Text.
+func SetFormatter(format string) {
+	switch format {
+	case "json":
+		logrus.SetFormatter(new(logrus.JSONFormatter))
+	default:
+		logrus.SetFormatter(new(logrus.TextFormatter))
+	}
+}
+
+// SetOutput sets the output of the logger.
+// Supported output: stdout, stderr or file.
+func SetOutput(out io.Writer) {
+	logrus.SetOutput(out)
 }
 
 // SetVersion sets the project version to logger.

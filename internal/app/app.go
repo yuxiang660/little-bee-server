@@ -47,10 +47,14 @@ func Open(ctx context.Context, opts ...Option) func() {
 	handleError(err)
 
 	cfg := config.Global()
-
 	logger.Printf(ctx, "Start Server, Run Mode: %s, Version: %s, PID: %d", cfg.RunMode, o.Version, os.Getpid())
 
+	releaseLogger, err := ConfigLogger()
+	handleError(err)
+
 	return func() {
-		logger.Printf(ctx, "Close the server")
+		if releaseLogger != nil {
+			releaseLogger()
+		}
 	}
 }

@@ -1,2 +1,13 @@
 # run mode (debug,test,release)
 run_mode = "debug"
+
+# Log Configuration
+[log]
+# Log Level (1:fatal 2:error,3:warn,4:info,5:debug)
+level = 5
+# Log Format (supported format：text/json)
+format = "text"
+# Log Output (supported：stdout/stderr/file)
+output = "stdout"
+# Log Filename for "file" Log Output
+output_file = "data/ginadmin.log"
