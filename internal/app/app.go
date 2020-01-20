@@ -47,11 +47,10 @@ func Open(ctx context.Context, opts ...Option) func() {
 	err := config.LoadGlobal(o.ConfigFile)
 	handleError(err)
 
-	cfg := config.Global()
-	logger.Printf(ctx, "Start Server, Run Mode: %s, Version: %s, PID: %d", cfg.RunMode, o.Version, os.Getpid())
-
 	releaseLogger, err := ConfigLogger()
 	handleError(err)
+
+	logger.Printf(ctx, "Start Server, Run Mode: %s, Version: %s, PID: %d", config.Global().RunMode, o.Version, os.Getpid())
 
 	container, releaseContainer := BuildContainer()
 
