@@ -58,8 +58,8 @@ type (
 	traceIDContextKey struct{}
 )
 
-// NewTraceIDContext returns a copy of parent with trace id value.
-func NewTraceIDContext(parent context.Context, traceID string) context.Context {
+// AddTraceIDToContext returns a copy of parent context with trace id value.
+func AddTraceIDToContext(parent context.Context, traceID string) context.Context {
 	return context.WithValue(parent, traceIDContextKey{}, traceID)
 }
 

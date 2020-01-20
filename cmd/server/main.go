@@ -37,7 +37,7 @@ func main() {
 	signal.Notify(sc, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 
 	logger.SetVersion(VERSION)
-	ctx := logger.NewTraceIDContext(context.Background(), util.NewTraceID())
+	ctx := logger.AddTraceIDToContext(context.Background(), util.NewTraceID())
 
 	releaseAPP := app.Open(ctx,
 		app.SetConfigFile(configFile),
