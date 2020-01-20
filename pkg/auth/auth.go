@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"context"
 	"errors"
 )
 
@@ -20,6 +19,6 @@ type TokenInfo interface {
 
 // Auther defines the infterface to manager a token.
 type Auther interface {
-	GenerateToken(ctx context.Context, userID string) (TokenInfo, error)
-	ParseUserID(ctx context.Context, accessToken string) (string, error)
+	GenerateToken(userID string) (TokenInfo, error)
+	ParseUserID(accessToken string) (string, error)
 }

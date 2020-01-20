@@ -1,7 +1,6 @@
 package jwtauth
 
 import (
-	"context"
 	"time"
 
 	"github.com/yuxiang660/little-bee-server/pkg/auth"
@@ -78,7 +77,7 @@ func New(opts ...Option) auth.Auther {
 }
 
 // GenerateToken generates a token for a user.
-func (a *autherJWT) GenerateToken(ctx context.Context, userID string) (auth.TokenInfo, error) {
+func (a *autherJWT) GenerateToken(userID string) (auth.TokenInfo, error) {
 	now := time.Now()
 	expiresAt := now.Add(time.Duration(a.opts.expired) * time.Second).Unix()
 
@@ -116,7 +115,7 @@ func (a *autherJWT) parseToken(tokenString string) (*jwt.StandardClaims, error) 
 // ParseUserID parses a token.
 // If the token is invalid, returns auth.ErrInvalidToken error.
 // If the token is valid, returns user id string of the token user. 
-func (a *autherJWT) ParseUserID(ctx context.Context, tokenString string) (string, error) {
+func (a *autherJWT) ParseUserID(tokenString string) (string, error) {
 	claims, err := a.parseToken(tokenString)
 	if err != nil {
 		return "", err
