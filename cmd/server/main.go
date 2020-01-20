@@ -37,9 +37,7 @@ func main() {
 	signal.Notify(sc, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 
 	logger.SetVersion(VERSION)
-	logger.SetTraceIDFunc(util.NewTraceID)
 	ctx := logger.NewTraceIDContext(context.Background(), util.NewTraceID())
-	span := logger.GetStartSpanCall(ctx)
 
 	releaseAPP := app.Open(ctx,
 		app.SetConfigFile(configFile),
@@ -48,7 +46,7 @@ func main() {
 Loop:
 	for {
 		sig := <-sc
-		span().Printf("Received a signal [%s]", sig.String())
+		logger.Printf(ctx, "Received a signal [%s]", sig.String())
 
 		switch sig {
 		case syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT:
@@ -64,7 +62,7 @@ Loop:
 		releaseAPP()
 	}
 
-	span().Printf("Exit Service")
+	logger.Printf(ctx, "Exit Service")
 	time.Sleep(time.Second)
 	os.Exit(int(atomic.LoadInt32(&state)))
 }

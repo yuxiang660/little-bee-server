@@ -5,6 +5,7 @@ import (
 	"io"
 
 	"github.com/sirupsen/logrus"
+	"github.com/yuxiang660/little-bee-server/pkg/util"
 )
 
 // Logger is the alias of logrus logger.
@@ -23,7 +24,6 @@ type TraceIDFunc func() string
 
 var (
 	version string
-	traceIDFunc TraceIDFunc
 )
 
 // SetLevel sets the logger level.
@@ -54,11 +54,6 @@ func SetVersion(v string) {
 	version = v
 }
 
-// SetTraceIDFunc sets callback function for trace id.
-func SetTraceIDFunc(fn TraceIDFunc) {
-	traceIDFunc = fn
-}
-
 type (
 	traceIDContextKey struct{}
 )
@@ -68,10 +63,10 @@ func NewTraceIDContext(parent context.Context, traceID string) context.Context {
 	return context.WithValue(parent, traceIDContextKey{}, traceID)
 }
 
-// GetTraceID returns trace id string.
+// getTraceID returns trace id string.
 // If the context has trace id, retrieve the string from the context.
 // If the context doesn't have trace id, generate a new trace id.
-func GetTraceID(ctx context.Context) string {
+func getTraceID(ctx context.Context) string {
 	v := ctx.Value(traceIDContextKey{})
 	if v != nil {
 		if s, ok := v.(string); ok {
@@ -79,10 +74,7 @@ func GetTraceID(ctx context.Context) string {
 		}
 	}
 
-	if traceIDFunc != nil {
-		return traceIDFunc()
-	}
-	return ""
+	return util.NewTraceID()
 }
 
 type spanOptions struct {
@@ -128,7 +120,7 @@ func StartSpan(ctx context.Context, opts ...SpanOption) *Entry {
 	
 	fields[VersionKey] = version
 
-	if v := GetTraceID(ctx); v != ""{
+	if v := getTraceID(ctx); v != ""{
 		fields[TraceIDKey] = v
 	}
 	if v := o.title; v != "" {
@@ -139,13 +131,6 @@ func StartSpan(ctx context.Context, opts ...SpanOption) *Entry {
 	}
 
 	return &Entry{entry: logrus.WithFields(fields)}
-}
-
-// GetStartSpanCall returns a function to start a span logger.
-func GetStartSpanCall(ctx context.Context, opts ...SpanOption) func() *Entry {
-	return func() *Entry {
-		return StartSpan(ctx, opts...)
-	}
 }
 
 // Fatalf logs fatal message through a span logger.

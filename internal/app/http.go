@@ -36,7 +36,7 @@ func OpenHTTPServer(ctx context.Context, container *dig.Container) func() {
 			err = srv.ListenAndServe()
 		}
 		if err != nil && err != http.ErrServerClosed {
-			logger.Errorf(ctx, err.Error())
+			logger.Fatalf(ctx, err.Error())
 		}
 	}()
 	

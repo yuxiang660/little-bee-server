@@ -6,7 +6,7 @@ run_mode = "debug"
 # http ip address
 host = "0.0.0.0"
 # http port
-port = 10088
+port = 8181
 # certification file for SSL
 cert_file = ""
 # certification key file for SSL
