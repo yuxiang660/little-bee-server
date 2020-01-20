@@ -1,0 +1,2 @@
+# run mode (debug,test,release)
+run_mode = "debug"
