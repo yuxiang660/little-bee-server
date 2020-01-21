@@ -48,11 +48,11 @@ Loop:
 		}
 	}
 
+	logger.Info("Exit Service")
 	if releaseAPP != nil {
 		releaseAPP()
 	}
-
-	logger.Info("Exit Service")
+	
 	time.Sleep(time.Second)
 	os.Exit(int(atomic.LoadInt32(&state)))
 }

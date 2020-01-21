@@ -4,7 +4,8 @@ package logger
 
 import (
 	"fmt"
-	"io"
+	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 
@@ -31,10 +32,36 @@ func SetFormatter(format string) {
 	}
 }
 
-// SetOutput sets the output of the logger.
-// Supported output: stdout, stderr or file.
-func SetOutput(out io.Writer) {
-	logrus.SetOutput(out)
+// SetOutput sets the output of the logger. Supported output: stdout, stderr or file.
+// If the output is file, returns a function to release the resource.
+func SetOutput(out string, filename string) (func(), error) {
+	if out == "" {
+		return nil, nil
+	}
+
+	switch out {
+	case "stdout":
+		logrus.SetOutput(os.Stdout)
+	case "stderr":
+		logrus.SetOutput(os.Stderr)
+	case "file":
+		if name := filename; name != "" {
+			_ = os.MkdirAll(filepath.Dir(name), 0777)
+			f, err := os.OpenFile(name, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
+			if err != nil {
+				return nil, err
+			}
+			logrus.SetOutput(f)
+
+			return func() {
+				if f != nil {
+					f.Close()
+				}
+			}, nil
+		}
+	}
+
+	return nil, nil
 }
 
 // Debug logs a message at level Debug on the standard logger.

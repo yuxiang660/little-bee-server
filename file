@@ -1,0 +1,3 @@
+time="2020-01-21T17:27:32+08:00" level=info msg="Start Server:" PID=19792 RunMode=debug file="app.go:44"
+time="2020-01-21T17:27:33+08:00" level=info msg="HTTP service start, listen at: 0.0.0.0:8181" file="http.go:30"
+time="2020-01-21T17:27:46+08:00" level=info msg="Received a signal interrupt" file="main.go:39"
