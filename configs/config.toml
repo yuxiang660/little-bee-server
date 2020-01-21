@@ -23,7 +23,7 @@ format = "text"
 # log output (supported：stdout/stderr/file)
 output = "stdout"
 # log filename for "file" Log Output
-output_file = "data/ginadmin.log"
+output_file = "export/log/ginadmin.log"
 
 # user authentication (jwt)
 [jwt_auth]
@@ -50,5 +50,5 @@ max_idle_conns = 50
 # sqlite database configuration
 [sqlite3]
 # path of sqlite database
-path = "data/ginadmin.db"
+path = "export/data/ginadmin.db"
 
