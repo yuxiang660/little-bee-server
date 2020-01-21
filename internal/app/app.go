@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/yuxiang660/little-bee-server/internal/app/config"
-	"github.com/yuxiang660/little-bee-server/pkg/logger"
+	"github.com/yuxiang660/little-bee-server/internal/app/logger"
 	"go.uber.org/dig"
 )
 

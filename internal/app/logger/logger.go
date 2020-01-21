@@ -1,3 +1,5 @@
+// Wrapper of logrus. Do not use logrus directly in the project.
+
 package logger
 
 import (

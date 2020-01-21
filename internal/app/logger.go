@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/yuxiang660/little-bee-server/internal/app/config"
-	"github.com/yuxiang660/little-bee-server/pkg/logger"
+	"github.com/yuxiang660/little-bee-server/internal/app/logger"
 )
 
 // ConfigLogger configures the logger based on config file for the web application.

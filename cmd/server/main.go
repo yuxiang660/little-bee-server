@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/yuxiang660/little-bee-server/internal/app"
-	"github.com/yuxiang660/little-bee-server/pkg/logger"
+	"github.com/yuxiang660/little-bee-server/internal/app/logger"
 )
 
 var (
