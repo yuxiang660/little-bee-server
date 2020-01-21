@@ -15,7 +15,7 @@ import (
 
 // OpenHTTPServer opens HTTP service.
 // OpenHTTPServer returns a function to release resources of HTTP service.
-func OpenHTTPServer(ctx context.Context, container *dig.Container) func() {
+func OpenHTTPServer(container *dig.Container) func() {
 	cfg := config.Global().HTTP
 	addr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
 	srv := &http.Server{
@@ -27,7 +27,7 @@ func OpenHTTPServer(ctx context.Context, container *dig.Container) func() {
 	}
 
 	go func() {
-		logger.Printf(ctx, "HTTP service start, listen at: [%s]", addr)
+		logger.Info("HTTP service start, listen at: ", addr)
 		var err error
 		if cfg.CertFile != "" && cfg.KeyFile != "" {
 			srv.TLSConfig = &tls.Config{MinVersion: tls.VersionTLS12}
@@ -36,17 +36,17 @@ func OpenHTTPServer(ctx context.Context, container *dig.Container) func() {
 			err = srv.ListenAndServe()
 		}
 		if err != nil && err != http.ErrServerClosed {
-			logger.Fatalf(ctx, err.Error())
+			logger.Fatal(err.Error())
 		}
 	}()
 	
 	return func() {
-		ctx, cancel := context.WithTimeout(ctx, time.Second*time.Duration(cfg.ShutdownTimeout))
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(cfg.ShutdownTimeout))
 		defer cancel()
 
 		srv.SetKeepAlivesEnabled(false)
 		if err := srv.Shutdown(ctx); err != nil {
-			logger.Errorf(ctx, err.Error())
+			logger.Error(err.Error())
 		}
 	}
 }

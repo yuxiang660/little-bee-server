@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"os"
 
 	"github.com/yuxiang660/little-bee-server/internal/app/config"
@@ -11,7 +10,6 @@ import (
 
 type options struct {
 	ConfigFile string
-	Version    string
 }
 
 // Option defines function signature to set data in app options.
@@ -24,13 +22,6 @@ func SetConfigFile(s string) Option {
 	}
 }
 
-// SetVersion returns an action to set version of the project.
-func SetVersion(s string) Option {
-	return func(o *options) {
-		o.Version = s
-	}
-}
-
 func handleError(err error) {
 	if err != nil {
 		panic(err)
@@ -39,7 +30,7 @@ func handleError(err error) {
 
 // Open starts the web application after initialization.
 // Open returns a function to release resources of the web application.
-func Open(ctx context.Context, opts ...Option) func() {
+func Open(opts ...Option) func() {
 	var o options
 	for _, opt := range opts {
 		opt(&o)
@@ -50,11 +41,14 @@ func Open(ctx context.Context, opts ...Option) func() {
 	releaseLogger, err := ConfigLogger()
 	handleError(err)
 
-	logger.Printf(ctx, "Start Server, Run Mode: %s, Version: %s, PID: %d", config.Global().RunMode, o.Version, os.Getpid())
+	logger.InfoWithFields("Start Server:", logger.Fields {
+		"RunMode": config.Global().RunMode,
+		"PID": os.Getpid(),
+	})
 
 	container, releaseContainer := BuildContainer()
 
-	releaseHTTP := OpenHTTPServer(ctx, container)
+	releaseHTTP := OpenHTTPServer(container)
 
 	return func() {
 		if releaseHTTP != nil {
