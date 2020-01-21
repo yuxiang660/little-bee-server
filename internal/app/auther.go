@@ -11,18 +11,19 @@ import (
 // InjectAuther returns a function to release auther resource. 
 // The auther will be construct based on configuration from clients.
 // For example, clients can set token expired time and so on.
-func InjectAuther(container *dig.Container) (func(), error) {
+func InjectAuther(container *dig.Container) func() {
 	cfg := config.Global().JWTAuth
 
-	a := jwt.New(
+	a, err := jwt.New(
 		jwt.SetExpired(cfg.Expired),
 		jwt.SetSigningKey(cfg.SigningKey),
 		jwt.SetSigningMethod(cfg.SigningMethod),
 	)
+	handleError(err)
 
 	_ = container.Provide(func() auther.Auther {
 		return a
 	})
-	
-	return nil, nil
+
+	return nil
 }

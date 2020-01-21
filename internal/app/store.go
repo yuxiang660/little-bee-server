@@ -8,7 +8,7 @@ import (
 )
 
 // InjectStore injects store constructor to dig container.
-func InjectStore(container *dig.Container) (func(), error) {
+func InjectStore(container *dig.Container) func() {
 	cfg := config.Global()
 	db, err := gorm.New(
 		gorm.SetDebug(cfg.Gorm.Debug),
@@ -18,9 +18,7 @@ func InjectStore(container *dig.Container) (func(), error) {
 		gorm.SetMaxOpenConns(cfg.Gorm.MaxOpenConns),
 		gorm.SetMaxIdleConns(cfg.Gorm.MaxIdleConns),
 	)
-	if err != nil {
-		return nil, err
-	}
+	handleError(err)
 
 	_ = container.Provide(func() store.Store {
 		return db
@@ -28,5 +26,5 @@ func InjectStore(container *dig.Container) (func(), error) {
 
 	return func() {
 		db.Close()
-	}, nil
+	}
 }

@@ -7,20 +7,22 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"github.com/yuxiang660/little-bee-server/internal/app/config"
 	"github.com/yuxiang660/little-bee-server/internal/app/logger"
+	"github.com/yuxiang660/little-bee-server/internal/app/routers"
 	"go.uber.org/dig"
 )
 
-// OpenHTTPServer opens HTTP service.
-// OpenHTTPServer returns a function to release resources of HTTP service.
+// OpenHTTPServer opens HTTP service, and returns a function to release resources of HTTP service.
 func OpenHTTPServer(container *dig.Container) func() {
+	r, err := routers.InitRouters(container)
+	handleError(err)
+
 	cfg := config.Global().HTTP
 	addr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
 	srv := &http.Server{
 		Addr: addr,
-		Handler: gin.Default(),
+		Handler: r,
 		ReadTimeout: 5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout: 15 * time.Second,

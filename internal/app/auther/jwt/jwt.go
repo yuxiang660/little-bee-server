@@ -57,7 +57,7 @@ type autherJWT struct {
 }
 
 // New creates an autherJWT object based on user configuration.
-func New(opts ...Option) auther.Auther {
+func New(opts ...Option) (auther.Auther, error) {
 	o := defaultOptions
 	for _, opt := range opts {
 		opt(&o)
@@ -86,7 +86,7 @@ func New(opts ...Option) auther.Auther {
 		return []byte(o.signingKey), nil
 	}
 
-	return &a
+	return &a, nil
 }
 
 // GenerateToken generates a token for a user.

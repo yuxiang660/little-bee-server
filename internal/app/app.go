@@ -9,7 +9,7 @@ import (
 )
 
 type options struct {
-	ConfigFile string
+	configFile string
 }
 
 // Option defines function signature to set data in app options.
@@ -18,35 +18,28 @@ type Option func(*options)
 // SetConfigFile returns an action to set configuration filename in app options.
 func SetConfigFile(s string) Option {
 	return func(o *options) {
-		o.ConfigFile = s
+		o.configFile = s
 	}
 }
 
-func handleError(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
-// Open starts the web application after initialization.
-// Open returns a function to release resources of the web application.
+// Open starts the web application, and returns a function to release resources of 
+// the web application.
 func Open(opts ...Option) func() {
 	var o options
 	for _, opt := range opts {
 		opt(&o)
 	}
-	err := config.LoadGlobal(o.ConfigFile)
+	err := config.LoadGlobal(o.configFile)
 	handleError(err)
 
-	releaseLogger, err := ConfigLogger()
-	handleError(err)
+	releaseLogger := ConfigLogger()
 
 	logger.InfoWithFields("Start Server:", logger.Fields {
 		"RunMode": config.Global().RunMode,
 		"PID": os.Getpid(),
 	})
 
-	container, releaseContainer := BuildContainer()
+	container, releaseContainer := buildContainer()
 
 	releaseHTTP := OpenHTTPServer(container)
 
@@ -65,15 +58,17 @@ func Open(opts ...Option) func() {
 	}
 }
 
-// BuildContainer builds a dig container for dependency injection.
-func BuildContainer() (*dig.Container, func()) {
+func handleError(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+func buildContainer() (*dig.Container, func()) {
 	container := dig.New()
 
-	releaseAuther, err := InjectAuther(container)
-	handleError(err)
-
-	releaseStore, err := InjectStore(container)
-	handleError(err)
+	releaseAuther := InjectAuther(container)
+	releaseStore := InjectStore(container)
 
 	return container, func() {
 		if releaseStore != nil {
