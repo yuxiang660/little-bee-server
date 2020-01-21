@@ -11,8 +11,8 @@ type response map[string]interface{}
 // Error defines the interface to manager the error
 type Error interface {
 	Error() string
-	ResponseBody() response
-	StatusCode() int 
+	Body() response
+	Code() int 
 }
 
 // new returns an internal error that has implemented Error interface.
@@ -41,13 +41,13 @@ func (e *errorImpl) Error() string {
 	return e.message
 }
 
-func (e *errorImpl) ResponseBody() response {
+func (e *errorImpl) Body() response {
 	return response{
 		"code": e.statusCode,
 		"message": e.message,
 	}
 }
 
-func (e *errorImpl) StatusCode() int {
+func (e *errorImpl) Code() int {
 	return e.statusCode
 }
