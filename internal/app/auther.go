@@ -2,9 +2,8 @@ package app
 
 import (
 	"github.com/yuxiang660/little-bee-server/internal/app/config"
-	"github.com/yuxiang660/little-bee-server/pkg/auth"
-	"github.com/yuxiang660/little-bee-server/pkg/auth/jwtauth"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/yuxiang660/little-bee-server/internal/app/auther"
+	"github.com/yuxiang660/little-bee-server/internal/app/auther/jwt"
 	"go.uber.org/dig"
 )
 
@@ -15,31 +14,14 @@ import (
 func InjectAuther(container *dig.Container) (func(), error) {
 	cfg := config.Global().JWTAuth
 
-	var opts []jwtauth.Option
-	opts = append(opts, jwtauth.SetExpired(cfg.Expired))
-	opts = append(opts, jwtauth.SetSigningKey([]byte(cfg.SigningKey)))
-	opts = append(opts, jwtauth.SetKeyfunc(func(t *jwt.Token) (interface{}, error) {
-		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, auth.ErrInvalidToken
-		}
-		return []byte(cfg.SigningKey), nil
-	}))
+	a := jwt.New(
+		jwt.SetExpired(cfg.Expired),
+		jwt.SetSigningKey(cfg.SigningKey),
+		jwt.SetSigningMethod(cfg.SigningMethod),
+	)
 
-	var method jwt.SigningMethod
-	switch cfg.SigningMethod {
-	case "HS256":
-		method = jwt.SigningMethodHS256
-	case "HS384":
-		method = jwt.SigningMethodHS384
-	default:
-		method = jwt.SigningMethodHS512
-	}
-	opts = append(opts, jwtauth.SetSigningMethod(method))
-
-	auther := jwtauth.New(opts...)
-
-	_ = container.Provide(func() auth.Auther {
-		return auther
+	_ = container.Provide(func() auther.Auther {
+		return a
 	})
 	
 	return nil, nil

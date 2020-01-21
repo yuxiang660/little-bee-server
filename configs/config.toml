@@ -27,12 +27,12 @@ output_file = "export/log/ginadmin.log"
 
 # user authentication (jwt)
 [jwt_auth]
-# JWT attribute (supported：HS512/HS384/HS512)
-signing_method = "HS512"
-# JWT attribute (supported: any string)
-signing_key = "GINADMIN"
 # token expired Time（Unit: second）
 expired = 7200
+# JWT attribute (supported: any string)
+signing_key = "GINADMIN"
+# JWT attribute (supported：HS512/HS384/HS512)
+signing_method = "HS512"
 
 # gorm configuration
 [gorm]
