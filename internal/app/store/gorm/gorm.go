@@ -1,8 +1,15 @@
-package store
+// Wrapper of gorm. Do not use gorm directly in the project.
+
+package gorm
 
 import (
+	"errors"
+	"os"
+	"path/filepath"
 	"time"
-	"github.com/jinzhu/gorm"
+
+	gorm "github.com/jinzhu/gorm"
+	"github.com/yuxiang660/little-bee-server/internal/app/store"
 
 	// gorm inject
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -15,15 +22,6 @@ type options struct {
 	maxLifetime  int
 	maxOpenConns int
 	maxIdleConns int
-}
-
-var defaultOptions = options{
-	debug: true,
-	DBType: "sqlite3",
-	DSN: "data/ginadmin.db",
-	maxLifetime: 7200,
-	maxOpenConns: 150,
-	maxIdleConns: 50,
 }
 
 // Option defines function signature to set options.
@@ -71,11 +69,22 @@ func SetMaxIdleConns(maxIdleConns int) Option {
 	}
 }
 
+type storeGorm struct {
+	db *gorm.DB
+}
+
 // New creates an autherJWT object based on user configuration.
-func New(opts ...Option) (*gorm.DB, error) {
-	o := defaultOptions
+func New(opts ...Option) (store.Store, error) {
+	var o options
 	for _, opt := range opts {
 		opt(&o)
+	}
+
+	switch o.DBType {
+	case "sqlite3":
+		_ = os.MkdirAll(filepath.Dir(o.DSN), 0777)
+	default:
+		return nil, errors.New("Unknown Database")
 	}
 
 	db, err := gorm.Open(o.DBType, o.DSN)
@@ -95,5 +104,11 @@ func New(opts ...Option) (*gorm.DB, error) {
 	db.DB().SetMaxIdleConns(o.maxIdleConns)
 	db.DB().SetMaxOpenConns(o.maxOpenConns)
 	db.DB().SetConnMaxLifetime(time.Duration(o.maxLifetime) * time.Second)
-	return db, nil
+
+	return &storeGorm{db: db}, nil
+}
+
+// Close close current db connection.  If database connection is not an io.Closer, returns an error.
+func (s *storeGorm)Close() error{
+	return s.db.Close()
 }

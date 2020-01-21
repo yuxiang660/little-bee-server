@@ -1,51 +1,32 @@
 package app
 
 import (
-	"errors"
-	"os"
-	"path/filepath"
-
-	"github.com/jinzhu/gorm"
 	"github.com/yuxiang660/little-bee-server/internal/app/config"
-	"github.com/yuxiang660/little-bee-server/pkg/store"
+	"github.com/yuxiang660/little-bee-server/internal/app/store"
+	"github.com/yuxiang660/little-bee-server/internal/app/store/gorm"
 	"go.uber.org/dig"
 )
 
 // InjectStore injects store constructor to dig container.
 func InjectStore(container *dig.Container) (func(), error) {
 	cfg := config.Global()
-
-	var dsn string
-	switch cfg.Gorm.DBType {
-	case "sqlite3":
-		dsn = cfg.Sqlite3.DSN()
-		_ = os.MkdirAll(filepath.Dir(dsn), 0777)
-	default:
-		return nil, errors.New("Unknown database")
-	}
-
-	gormCfg := cfg.Gorm
-
-	var opts []store.Option
-	opts = append(opts, store.SetDebug(gormCfg.Debug))
-	opts = append(opts, store.SetDBType(gormCfg.DBType))
-	opts = append(opts, store.SetDSN(dsn))
-	opts = append(opts, store.SetMaxLifetime(gormCfg.MaxLifetime))
-	opts = append(opts, store.SetMaxOpenConns(gormCfg.MaxOpenConns))
-	opts = append(opts, store.SetMaxIdleConns(gormCfg.MaxIdleConns))
-
-	store, err := store.New(opts...)
+	db, err := gorm.New(
+		gorm.SetDebug(cfg.Gorm.Debug),
+		gorm.SetDBType(cfg.Gorm.DBType),
+		gorm.SetDSN(cfg.Gorm.DSN()),
+		gorm.SetMaxLifetime(cfg.Gorm.MaxLifetime),
+		gorm.SetMaxOpenConns(cfg.Gorm.MaxOpenConns),
+		gorm.SetMaxIdleConns(cfg.Gorm.MaxIdleConns),
+	)
 	if err != nil {
 		return nil, err
 	}
 
-	releaseStore := func() {
-		store.Close()
-	}
-
-	_ = container.Provide(func() *gorm.DB {
-		return store
+	_ = container.Provide(func() store.Store {
+		return db
 	})
 
-	return releaseStore, nil
+	return func() {
+		db.Close()
+	}, nil
 }

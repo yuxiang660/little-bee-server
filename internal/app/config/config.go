@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/BurntSushi/toml"
+	"github.com/yuxiang660/little-bee-server/internal/app/logger"
 )
 
 // Config defines the structure of all configurations in config file(./configs/config.toml).
@@ -87,7 +88,17 @@ type Sqlite3 struct {
 	Path string `toml:"path"`
 }
 
-// DSN returns sqlite3 DSN string for database connenction. 
-func (a Sqlite3) DSN() string {
-	return a.Path
+// DSN returns DSN string for database connenction. 
+func (g Gorm) DSN() string {
+	var dsn string
+
+	switch g.DBType {
+	case "sqlite3":
+		dsn = global.Sqlite3.Path
+	default:
+		logger.Error("Unknow Database")
+		return ""
+	}
+
+	return dsn
 }
