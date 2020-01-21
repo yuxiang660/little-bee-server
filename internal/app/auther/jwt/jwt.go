@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/yuxiang660/little-bee-server/internal/app/auther"
+	"github.com/yuxiang660/little-bee-server/internal/app/errors"
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
@@ -81,7 +82,7 @@ func New(opts ...Option) (auther.Auther, error) {
 
 	a.keyfunc = func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, auther.ErrInvalidToken
+			return nil, errors.ErrorInValidToken
 		}
 		return []byte(o.signingKey), nil
 	}
@@ -119,14 +120,14 @@ func (a *autherJWT) parseToken(tokenString string) (*jwt.StandardClaims, error) 
 	if err != nil {
 		return nil, err
 	} else if !token.Valid {
-		return nil, auther.ErrInvalidToken
+		return nil, errors.ErrorInValidToken
 	}
 
 	return token.Claims.(*jwt.StandardClaims), nil
 }
 
 // ParseUserID parses a token.
-// If the token is invalid, returns auth.ErrInvalidToken error.
+// If the token is invalid, returns ErrorInValidToken error.
 // If the token is valid, returns user id string of the token user. 
 func (a *autherJWT) ParseUserID(tokenString string) (string, error) {
 	claims, err := a.parseToken(tokenString)

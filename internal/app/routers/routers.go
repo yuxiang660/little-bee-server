@@ -13,8 +13,8 @@ func InitRouters(container *dig.Container) (*gin.Engine, error) {
 	cfg := config.Global()
 
 	gin.SetMode(cfg.RunMode)
-
 	router := gin.New()
+	
 	router.NoMethod(middleware.NoMethodHandler())
 	router.NoRoute(middleware.NoRouteHandler())
 

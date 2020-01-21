@@ -1,14 +1,5 @@
 package auther
 
-import (
-	"errors"
-)
-
-// ErrInvalidToken defines an error for invalid token.
-var (
-	ErrInvalidToken = errors.New("invalid token")
-)
-
 // TokenInfo defines the interface to access the contents of a token.
 type TokenInfo interface {
 	GetAccessToken() string

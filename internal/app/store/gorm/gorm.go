@@ -3,12 +3,12 @@
 package gorm
 
 import (
-	"errors"
 	"os"
 	"path/filepath"
 	"time"
 
 	gorm "github.com/jinzhu/gorm"
+	"github.com/yuxiang660/little-bee-server/internal/app/errors"
 	"github.com/yuxiang660/little-bee-server/internal/app/store"
 
 	// gorm inject
@@ -84,7 +84,7 @@ func New(opts ...Option) (store.Store, error) {
 	case "sqlite3":
 		_ = os.MkdirAll(filepath.Dir(o.DSN), 0777)
 	default:
-		return nil, errors.New("Unknown Database")
+		return nil, errors.ErrorUnknowDatabase
 	}
 
 	db, err := gorm.Open(o.DBType, o.DSN)
