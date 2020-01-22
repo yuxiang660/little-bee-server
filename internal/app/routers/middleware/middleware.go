@@ -8,14 +8,14 @@ import (
 // NoMethodHandler handles unexpected methods.
 func NoMethodHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(errors.ErrorNotFound.Code(), errors.ErrorNotFound.Body())
+		c.JSON(errors.ErrNotFound.Code(), errors.ErrNotFound.Body())
 	}
 }
 
 // NoRouteHandler handles unexpected routers.
 func NoRouteHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(errors.ErrorNotFound.Code(), errors.ErrorNotFound.Body())
+		c.JSON(errors.ErrNotFound.Code(), errors.ErrNotFound.Body())
 	}
 }
 

@@ -8,11 +8,12 @@ import (
 // If the error is an internal error, the status code is http.StatusInternalServerError.
 // If the error is an internal error, the status code refers to "net/http/status.go".
 var (
-	ErrorInValidToken = newInternalError("Invalid Token")
-	ErrorUnknowDatabase = newInternalError("Unknow Database")
+	ErrInValidToken = newInternalError("Invalid Token")
+	ErrUnknowDatabase = newInternalError("Unknow Database")
 
 	NoError = newHTTPError(http.StatusOK, "OK")
-	ErrorNotFound = newHTTPError(http.StatusNotFound, "Not Found")
-	ErrorMethodNotAllowed = newHTTPError(http.StatusMethodNotAllowed, "Method Not Allowed")
-	ErrorUnauthorized = newHTTPError(http.StatusUnauthorized, "Non-Authoritative Information")
+	ErrNotFound = newHTTPError(http.StatusNotFound, "Not Found")
+	ErrMethodNotAllowed = newHTTPError(http.StatusMethodNotAllowed, "Method Not Allowed")
+	ErrUnauthorized = newHTTPError(http.StatusUnauthorized, "Non-Authoritative Information")
+	ErrInternalServerError = newHTTPError(http.StatusInternalServerError, "Internal Server Error")
 )

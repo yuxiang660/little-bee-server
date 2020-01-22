@@ -84,7 +84,7 @@ func New(opts ...Option) (store.Store, error) {
 	case "sqlite3":
 		_ = os.MkdirAll(filepath.Dir(o.DSN), 0777)
 	default:
-		return nil, errors.ErrorUnknowDatabase
+		return nil, errors.ErrUnknowDatabase
 	}
 
 	db, err := gorm.Open(o.DBType, o.DSN)
