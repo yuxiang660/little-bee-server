@@ -13,6 +13,7 @@ func RegisterAPI(router *gin.Engine, container *dig.Container) error {
 	return container.Invoke(func(
 		a auther.Auther,
 		loginController controller.ILogin,
+		userController controller.IUser,
 	) error {
 		api := router.Group("/api")
 		{
@@ -30,6 +31,12 @@ func RegisterAPI(router *gin.Engine, container *dig.Container) error {
 				{
 					gLogin.POST("", loginController.In)
 					gLogin.POST("exit", loginController.Out)
+				}
+
+				// URL: /api/v1/pub/users
+				gUsers := pub.Group("users")
+				{
+					gUsers.POST("", userController.Create)
 				}
 			}
 		}

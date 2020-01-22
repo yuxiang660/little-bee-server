@@ -9,3 +9,8 @@ type ILogin interface {
 	In(c *gin.Context)
 	Out(c *gin.Context)
 }
+
+// IUser defines the interface to manager user controller.
+type IUser interface {
+	Create(c *gin.Context)
+}

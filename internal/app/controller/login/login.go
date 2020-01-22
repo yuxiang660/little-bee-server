@@ -1,6 +1,7 @@
 package login
 
 import (
+	// TODO: remove
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -25,6 +26,7 @@ func New(a auther.Auther) controller.ILogin {
 
 // In verifies username and password and generate a token to client.
 func (l *Login) In(c *gin.Context) {
+	// TODO: remove.
 	fmt.Println("Login")
 
 	var cred schema.LoginParam
@@ -32,6 +34,8 @@ func (l *Login) In(c *gin.Context) {
 		ginhelper.RespondError(c, errors.ErrBadRequestParam)
 		return
 	}
+
+	// TODO: remove this debug sentences.
 	fmt.Println(cred.UserName)
 	fmt.Println(cred.Password)
 
@@ -66,8 +70,8 @@ func verify(userName, password string) (*schema.User, error) {
 	return &user, nil
 }
 
-// TODO: it is a placeholder here, implement this function.
 // Out destroys the token for the login client.
+// TODO: it is a placeholder here, implement this function.
 func (l *Login) Out(c *gin.Context) {
 	fmt.Println("Logout")
 }
