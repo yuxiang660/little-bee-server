@@ -9,7 +9,7 @@ import (
 	"github.com/yuxiang660/little-bee-server/internal/app/controller"
 	"github.com/yuxiang660/little-bee-server/internal/app/ginhelper"
 	"github.com/yuxiang660/little-bee-server/internal/app/model"
-	"github.com/yuxiang660/little-bee-server/internal/app/schema"
+	"github.com/yuxiang660/little-bee-server/internal/app/model/schema"
 )
 
 // User defines the structure about user controller.

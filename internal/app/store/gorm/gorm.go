@@ -112,3 +112,8 @@ func New(opts ...Option) (store.Store, error) {
 func (s *storeGorm)Close() error{
 	return s.db.Close()
 }
+
+// AutoMigrate run auto migration for given models.
+func (s *storeGorm) AutoMigrate(values ...interface{}) error {
+	return s.db.AutoMigrate(values...).Error
+}

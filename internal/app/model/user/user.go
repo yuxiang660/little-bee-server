@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/yuxiang660/little-bee-server/internal/app/model"
-	"github.com/yuxiang660/little-bee-server/internal/app/schema"
+	"github.com/yuxiang660/little-bee-server/internal/app/model/schema"
 	"github.com/yuxiang660/little-bee-server/internal/app/store"
 )
 

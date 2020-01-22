@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/yuxiang660/little-bee-server/internal/app/schema"
+	"github.com/yuxiang660/little-bee-server/internal/app/model/schema"
 )
 
 // IUser defines the interface to manager user model.

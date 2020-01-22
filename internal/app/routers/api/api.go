@@ -30,7 +30,7 @@ func RegisterAPI(router *gin.Engine, container *dig.Container) error {
 				gLogin := pub.Group("/login")
 				{
 					gLogin.POST("", loginController.In)
-					gLogin.POST("exit", loginController.Out)
+					gLogin.POST("/exit", loginController.Out)
 				}
 
 				// URL: /api/v1/pub/users
