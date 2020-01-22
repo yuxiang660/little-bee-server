@@ -13,18 +13,18 @@ import (
 
 // Login defines the structure about login controller.
 type Login struct {
-	a auther.Auther
+	auth auther.Auther
 }
 
 // New creates login controller.
 func New(a auther.Auther) controller.ILogin {
 	return &Login{
-		a: a,
+		auth: a,
 	}
 }
 
 // In verifies username and password and generate a token to client.
-func (a *Login) In(c *gin.Context) {
+func (l *Login) In(c *gin.Context) {
 	fmt.Println("Login")
 
 	var cred schema.LoginParam
@@ -68,6 +68,6 @@ func verify(userName, password string) (*schema.User, error) {
 
 // TODO: it is a placeholder here, implement this function.
 // Out destroys the token for the login client.
-func (a *Login) Out(c *gin.Context) {
+func (l *Login) Out(c *gin.Context) {
 	fmt.Println("Logout")
 }

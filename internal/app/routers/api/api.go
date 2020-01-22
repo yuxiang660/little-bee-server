@@ -25,6 +25,7 @@ func RegisterAPI(router *gin.Engine, container *dig.Container) error {
 		{
 			pub := v1.Group("/pub")
 			{
+				// URL: /api/v1/pub/login
 				gLogin := pub.Group("/login")
 				{
 					gLogin.POST("", loginController.In)
