@@ -8,19 +8,19 @@ import (
 	"github.com/yuxiang660/little-bee-server/internal/app/errors"
 	"github.com/yuxiang660/little-bee-server/internal/app/controller"
 	"github.com/yuxiang660/little-bee-server/internal/app/ginhelper"
+	"github.com/yuxiang660/little-bee-server/internal/app/model"
 	"github.com/yuxiang660/little-bee-server/internal/app/schema"
-	"github.com/yuxiang660/little-bee-server/internal/app/store"
 )
 
 // User defines the structure about user controller.
 type User struct {
-	db store.Store
+	model model.IUser
 }
 
 // New creates user controller.
-func New(db store.Store) controller.IUser {
+func New(m model.IUser) controller.IUser {
 	return &User{
-		db: db,
+		model: m,
 	}
 }
 
