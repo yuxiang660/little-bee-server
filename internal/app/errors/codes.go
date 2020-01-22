@@ -16,4 +16,8 @@ var (
 	ErrMethodNotAllowed = newHTTPError(http.StatusMethodNotAllowed, "Method Not Allowed")
 	ErrUnauthorized = newHTTPError(http.StatusUnauthorized, "Non-Authoritative Information")
 	ErrInternalServerError = newHTTPError(http.StatusInternalServerError, "Internal Server Error")
+	ErrBadRequestParam = newHTTPError(http.StatusBadRequest, "Bad Request Parameters")
+	ErrInvalidUsername = newHTTPError(http.StatusBadRequest, "Invalid Username")
+	ErrInvalidPassword = newHTTPError(http.StatusBadRequest, "Invalid Password")
+	ErrInvalidUser = newHTTPError(http.StatusBadRequest, "Invalid User")
 )

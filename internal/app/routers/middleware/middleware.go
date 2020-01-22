@@ -3,19 +3,20 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/yuxiang660/little-bee-server/internal/app/errors"
+	"github.com/yuxiang660/little-bee-server/internal/app/ginhelper"
 )
 
 // NoMethodHandler handles unexpected methods.
 func NoMethodHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(errors.ErrNotFound.Code(), errors.ErrNotFound.Body())
+		ginhelper.RespondError(c, errors.ErrNotFound)
 	}
 }
 
 // NoRouteHandler handles unexpected routers.
 func NoRouteHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(errors.ErrNotFound.Code(), errors.ErrNotFound.Body())
+		ginhelper.RespondError(c, errors.ErrNotFound)
 	}
 }
 

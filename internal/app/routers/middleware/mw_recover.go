@@ -7,6 +7,7 @@ import (
 	"runtime"
 
 	"github.com/yuxiang660/little-bee-server/internal/app/errors"
+	"github.com/yuxiang660/little-bee-server/internal/app/ginhelper"
 	"github.com/yuxiang660/little-bee-server/internal/app/logger"
 	"github.com/gin-gonic/gin"
 )
@@ -27,7 +28,7 @@ func RecoveryMiddleware() gin.HandlerFunc {
 				logger.ErrorWithFields(msg, logger.Fields{
 					"stack": string(stack(3)),
 				})
-				c.JSON(errors.ErrInternalServerError.Code(), errors.ErrInternalServerError.Body())
+				ginhelper.RespondError(c, errors.ErrInternalServerError)
 			}
 		}()
 		c.Next()

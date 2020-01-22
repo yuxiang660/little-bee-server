@@ -15,7 +15,7 @@ func UserAuthMiddleware(a auther.Auther, skippers ...SkipperFunc) gin.HandlerFun
 			id, err := a.ParseUserID(t)
 			if err != nil {
 				if err == errors.ErrInvalidToken {
-					c.JSON(errors.ErrInvalidToken.Code(), errors.ErrInvalidToken.Body())
+					ginhelper.RespondError(c, errors.ErrInvalidToken)
 					return
 				}
 				c.String(errors.ErrInternalServerError.Code(), err.Error())
@@ -38,7 +38,7 @@ func UserAuthMiddleware(a auther.Auther, skippers ...SkipperFunc) gin.HandlerFun
 			c.Next()
 			return
 		}
-		c.JSON(errors.ErrInvalidToken.Code(), errors.ErrInvalidToken.Body())
+		ginhelper.RespondError(c, errors.ErrInvalidToken)
 	}	
 }
 

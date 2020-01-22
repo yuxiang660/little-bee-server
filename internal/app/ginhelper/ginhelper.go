@@ -3,6 +3,7 @@ package ginhelper
 import (
 	"strings"
 
+	"github.com/yuxiang660/little-bee-server/internal/app/errors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -31,3 +32,7 @@ func SetUserID(c *gin.Context, userID string) {
 	c.Set(userIDKey, userID)
 }
 
+// RespondError writes error code and error message with JSON format into the response body.
+func RespondError(c *gin.Context, err errors.Error) {
+	c.JSON(err.Code(), err.Body())
+}

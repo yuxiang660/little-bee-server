@@ -69,8 +69,13 @@ func buildContainer() (*dig.Container, func()) {
 
 	releaseAuther := InjectAuther(container)
 	releaseStore := InjectStore(container)
+	releaseController := InjectController(container)
 
 	return container, func() {
+		if releaseController != nil {
+			releaseController()
+		}
+
 		if releaseStore != nil {
 			releaseStore()
 		}
