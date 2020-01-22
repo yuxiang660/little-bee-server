@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yuxiang660/little-bee-server/internal/app/ginhelper"
 	"github.com/yuxiang660/little-bee-server/internal/app/logger"
 )
 
@@ -45,10 +46,14 @@ func LoggerMiddleware(skippers ...SkipperFunc) gin.HandlerFunc {
 		start := time.Now()
 		c.Next()
 		timeConsuming := time.Since(start).Nanoseconds() / 1e6
+		fields["time_consuming(ms)"] = timeConsuming
 
+		if id := ginhelper.GetUserID(c); id != "" {
+			fields["user_id"] = id
+		}
 		fields["res_status"] = c.Writer.Status()
 		fields["res_length"] = c.Writer.Size()
-		fields["time_consuming(ms)"] = timeConsuming
+		
 
 		logger.InfoWithFields("API Log", fields)
 	}

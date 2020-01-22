@@ -18,7 +18,7 @@ func InitRouters(container *dig.Container) (*gin.Engine, error) {
 	router.NoMethod(middleware.NoMethodHandler())
 	router.NoRoute(middleware.NoRouteHandler())
 
-	router.Use(middleware.LoggerMiddleware(middleware.URLPrefixWhiteList([]string{"/api/"}...)))
+	router.Use(middleware.LoggerMiddleware(middleware.HandlePrefixList([]string{"/api/"}...)))
 	router.Use(middleware.RecoveryMiddleware())
 
 	err := api.RegisterAPI(router, container)

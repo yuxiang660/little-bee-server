@@ -8,7 +8,7 @@ import (
 // If the error is an internal error, the status code is http.StatusInternalServerError.
 // If the error is an internal error, the status code refers to "net/http/status.go".
 var (
-	ErrInValidToken = newInternalError("Invalid Token")
+	ErrInvalidToken = newInternalError("Invalid Token")
 	ErrUnknowDatabase = newInternalError("Unknow Database")
 
 	NoError = newHTTPError(http.StatusOK, "OK")

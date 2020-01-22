@@ -22,9 +22,9 @@ func NoRouteHandler() gin.HandlerFunc {
 // SkipperFunc defines a check function to skip the middleware.
 type SkipperFunc func(*gin.Context) bool
 
-// URLPrefixBlackList defines a black list for the middleware.
+// SkipPrefixList defines a skip list for the middleware.
 // If the URL path includes one of the prefixes, the request will skip the middleware.
-func URLPrefixBlackList(prefixes ...string) SkipperFunc {
+func SkipPrefixList(prefixes ...string) SkipperFunc {
 	return func(c *gin.Context) bool {
 		path := c.Request.URL.Path
 		pathLen := len(path)
@@ -38,9 +38,9 @@ func URLPrefixBlackList(prefixes ...string) SkipperFunc {
 	}
 }
 
-// URLPrefixWhiteList defines a white list for the middleware.
+// HandlePrefixList defines a handle list for the middleware.
 // If the URL path doesn't include any of the prefixes, the request will skip the middleware.
-func URLPrefixWhiteList(prefixes ...string) SkipperFunc {
+func HandlePrefixList(prefixes ...string) SkipperFunc {
 	return func(c *gin.Context) bool {
 		path := c.Request.URL.Path
 		pathLen := len(path)

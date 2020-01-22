@@ -1,6 +1,13 @@
 # run mode (debug,test,release)
 run_mode = "debug"
 
+# root user
+[root]
+# user name
+user_name = "admin"
+# password
+password = "admin"
+
 # http configuration
 [http]
 # http ip address

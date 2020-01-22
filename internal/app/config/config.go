@@ -8,6 +8,7 @@ import (
 // Config defines the structure of all configurations in config file(./configs/config.toml).
 type Config struct {
 	RunMode     string      `toml:"run_mode"`
+	Root        Root        `toml:"root"`
 	HTTP        HTTP        `toml:"http"`
 	Log         Log         `toml:"log"`
 	JWTAuth     JWTAuth     `toml:"jwt_auth"`
@@ -50,6 +51,12 @@ func Global() *Config {
 	return global
 }
 
+// Root defines username and password of root user.
+type Root struct {
+	UserName string `toml:"user_name"`
+	Password string `toml:"password"`
+}
+
 // HTTP defines the structure of http configuration in config file.
 type HTTP struct {
 	Host            string `toml:"host"`
@@ -86,6 +93,11 @@ type Gorm struct {
 // Sqlite3 defines the structure of sqlite3 configuration in config file.
 type Sqlite3 struct {
 	Path string `toml:"path"`
+}
+
+// IsDebugMode checks whether the project is in debug mode or not.
+func (c *Config) IsDebugMode() bool {
+	return c.RunMode == "debug"
 }
 
 // DSN returns DSN string for database connenction. 
