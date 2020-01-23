@@ -9,6 +9,7 @@ import (
 	"github.com/yuxiang660/little-bee-server/internal/app/errors"
 	"github.com/yuxiang660/little-bee-server/internal/app/controller"
 	"github.com/yuxiang660/little-bee-server/internal/app/ginhelper"
+	"github.com/yuxiang660/little-bee-server/internal/app/logger"
 	"github.com/yuxiang660/little-bee-server/internal/app/model/schema"
 )
 
@@ -31,6 +32,7 @@ func (l *Login) In(c *gin.Context) {
 
 	var cred schema.LoginParam
 	if err := c.ShouldBind(&cred); err != nil {
+		logger.Error(err.Error())
 		ginhelper.RespondError(c, errors.ErrBadRequestParam)
 		return
 	}
@@ -41,6 +43,7 @@ func (l *Login) In(c *gin.Context) {
 
 	user, err := verify(cred.UserName, cred.Password)
 	if err != nil {
+		logger.Error(err.Error())
 		ginhelper.RespondError(c, err.(errors.Error))
 		return
 	}
@@ -48,7 +51,7 @@ func (l *Login) In(c *gin.Context) {
 	userID := user.RecordID
 	ginhelper.SetUserID(c, userID)
 
-	ginhelper.RespondError(c, errors.NoError)
+	ginhelper.RespondOK(c)
 }
 
 // TODO: retrieve username and password from database.

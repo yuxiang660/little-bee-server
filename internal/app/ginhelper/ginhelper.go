@@ -56,6 +56,8 @@ func respondJSON(c *gin.Context, status int, v interface{}) {
 	body, err := json.MarshalIndent(v, "", "	")
 	if err != nil {
 		logger.Error(err.Error())
+		c.JSON(errors.ErrInternalServerError.Code(), errors.ErrInternalServerError.Body())
+		return
 	}
 	c.Set(resBodyKey, body)
 	c.Data(status, "application/json; charset=utf-8", body)
