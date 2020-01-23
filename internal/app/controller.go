@@ -9,8 +9,10 @@ import (
 // InjectController injects an controller constructor to dig container.
 func InjectController(container *dig.Container) func() {
 
-	_ = container.Provide(login.New)
-	_ = container.Provide(user.New)
+	err := container.Provide(login.New)
+	handleError(err)
+	err = container.Provide(user.New)
+	handleError(err)
 
 	return nil
 }

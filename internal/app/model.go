@@ -8,7 +8,8 @@ import (
 // InjectModel injects model constructor to dig container.
 func InjectModel(container *dig.Container) func() {
 
-	_ = container.Provide(user.New)
-
+	err := container.Provide(user.New)
+	handleError(err)
+	
 	return nil
 }

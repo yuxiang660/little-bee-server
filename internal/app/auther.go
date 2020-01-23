@@ -21,9 +21,10 @@ func InjectAuther(container *dig.Container) func() {
 	)
 	handleError(err)
 
-	_ = container.Provide(func() auther.Auther {
+	err = container.Provide(func() auther.Auther {
 		return a
 	})
+	handleError(err)
 
 	return nil
 }
