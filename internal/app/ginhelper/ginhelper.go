@@ -25,7 +25,7 @@ func GetToken(c *gin.Context) string {
 	return token
 }
 
-// GetUserID gets user id from gin context.
+// GetUserID returns user id from gin context.
 func GetUserID(c *gin.Context) string {
 	return c.GetString(userIDKey)
 }
@@ -33,6 +33,16 @@ func GetUserID(c *gin.Context) string {
 // SetUserID sets user id to gin context.
 func SetUserID(c *gin.Context, userID string) {
 	c.Set(userIDKey, userID)
+}
+
+// GetResponseBody returns the contents of the response.
+func GetResponseBody(c *gin.Context) string {
+	if v, ok := c.Get(resBodyKey); ok && v != nil {
+		if b, ok := v.([]byte); ok {
+			return string(b)
+		}
+	}
+	return ""
 }
 
 // RespondError writes error code and error message with JSON format into the response body.

@@ -37,8 +37,7 @@ func LoggerMiddleware(skippers ...SkipperFunc) gin.HandlerFunc {
 				if err == nil {
 					buf := bytes.NewBuffer(body)
 					c.Request.Body = ioutil.NopCloser(buf)
-					fields["content_length"] = c.Request.ContentLength
-					fields["body"] = string(body)
+					fields["request_body"] = string(body)
 				}
 			}
 		}
@@ -48,12 +47,13 @@ func LoggerMiddleware(skippers ...SkipperFunc) gin.HandlerFunc {
 		timeConsuming := time.Since(start).Nanoseconds() / 1e6
 		fields["time_consuming(ms)"] = timeConsuming
 
+		fields["res_status"] = c.Writer.Status()
 		if id := ginhelper.GetUserID(c); id != "" {
 			fields["user_id"] = id
 		}
-		fields["res_status"] = c.Writer.Status()
-		fields["res_length"] = c.Writer.Size()
-		
+		if r := ginhelper.GetResponseBody(c); r != "" {
+			fields["response_body"] = r
+		}
 
 		logger.InfoWithFields("API Log", fields)
 	}

@@ -11,3 +11,8 @@ type User struct {
 	UserName  string    `json:"user_name" form:"user_name" binding:"required"`
 	Password  string    `json:"password"`
 }
+
+// UserQueryResults defines the return data from user query function.
+type UserQueryResults struct {
+	Users []User
+}

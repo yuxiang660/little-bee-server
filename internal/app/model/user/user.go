@@ -30,9 +30,9 @@ func (u *User) Create(item schema.User) error {
 }
 
 // Query returns all users in database with the username.
-func (u *User) Query(username string) ([]schema.User, error) {
+func (u *User) Query(username string) (schema.UserQueryResults, error) {
 	var users []schema.User
 	err := u.db.Find(&users, "user_name = ?", username)
 
-	return users, err
+	return schema.UserQueryResults{Users : users}, err
 }

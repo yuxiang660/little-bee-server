@@ -50,12 +50,12 @@ func (u *User) Query(c *gin.Context) {
 		return
 	}
 
-	users, err := u.model.Query(user.UserName)
+	results, err := u.model.Query(user.UserName)
 	if err != nil {
 		logger.Error(err.Error())
 		ginhelper.RespondError(c, errors.ErrInternalServerError)
 		return
 	}
 
-	ginhelper.RespondSuccess(c, users)
+	ginhelper.RespondSuccess(c, results.Users)
 }
