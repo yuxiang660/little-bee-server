@@ -1,13 +1,11 @@
 package user
 
 import (
-	// TODO: remove
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/yuxiang660/little-bee-server/internal/app/errors"
 	"github.com/yuxiang660/little-bee-server/internal/app/controller"
 	"github.com/yuxiang660/little-bee-server/internal/app/ginhelper"
+	"github.com/yuxiang660/little-bee-server/internal/app/logger"
 	"github.com/yuxiang660/little-bee-server/internal/app/model"
 	"github.com/yuxiang660/little-bee-server/internal/app/model/schema"
 )
@@ -26,19 +24,38 @@ func New(m model.IUser) controller.IUser {
 
 // Create creates a user with username and password.
 func (u *User) Create(c *gin.Context) {
-	// TODO: remove.
-	fmt.Println("User Create")
-
 	var user schema.User
 	if err := c.ShouldBind(&user); err != nil {
+		logger.Error(err.Error())
 		ginhelper.RespondError(c, errors.ErrBadRequestParam)
 		return
 	}
 
-	// TODO: remove.
-	fmt.Println("username:", user.UserName)
-	fmt.Println("password:", user.Password)
-	fmt.Println("recod_id:", user.RecordID)
+	if err := u.model.Create(user); err != nil {
+		logger.Error(err.Error())
+		ginhelper.RespondError(c, errors.ErrInternalServerError)
+		return
+	}
 
-	ginhelper.RespondError(c, errors.NoError)
+	ginhelper.RespondOK(c)
+}
+
+// Query query users with a username from client.
+// Query sting: ...?user_name=xxx
+func (u *User) Query(c *gin.Context) {
+	var user schema.User
+	if err := c.ShouldBind(&user); err != nil {
+		logger.Error(err.Error())
+		ginhelper.RespondError(c, errors.ErrBadRequestParam)
+		return
+	}
+
+	users, err := u.model.Query(user.UserName)
+	if err != nil {
+		logger.Error(err.Error())
+		ginhelper.RespondError(c, errors.ErrInternalServerError)
+		return
+	}
+
+	ginhelper.RespondSuccess(c, users)
 }

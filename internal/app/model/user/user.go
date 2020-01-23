@@ -1,8 +1,6 @@
 package user
 
 import (
-	"fmt"
-
 	"github.com/yuxiang660/little-bee-server/internal/app/logger"
 	"github.com/yuxiang660/little-bee-server/internal/app/model"
 	"github.com/yuxiang660/little-bee-server/internal/app/model/schema"
@@ -29,6 +27,17 @@ func New(db store.Store) (model.IUser, error) {
 
 // Create adds a user model to database.
 func (u *User) Create(item schema.User) error {
-	fmt.Println("user model creates one")
+	if err := u.db.Create(&item); err != nil {
+		return err
+	}
+
 	return nil
+}
+
+// Query returns all users in database with the username.
+func (u *User) Query(username string) ([]schema.User, error) {
+	var users []schema.User
+	err := u.db.Find(&users, "user_name = ?", username)
+
+	return users, err
 }

@@ -2,13 +2,16 @@ package ginhelper
 
 import (
 	"strings"
+	"encoding/json"
 
 	"github.com/yuxiang660/little-bee-server/internal/app/errors"
+	"github.com/yuxiang660/little-bee-server/internal/app/logger"
 	"github.com/gin-gonic/gin"
 )
 
 const (
 	userIDKey = "user-id"
+	resBodyKey = "res-body"
 )
 
 // GetToken gets token string from gin context.
@@ -34,5 +37,26 @@ func SetUserID(c *gin.Context, userID string) {
 
 // RespondError writes error code and error message with JSON format into the response body.
 func RespondError(c *gin.Context, err errors.Error) {
-	c.JSON(err.Code(), err.Body())
+	respondJSON(c, err.Code(), err.Body())
+}
+
+// RespondOK writes ok string into the response body with successful status code.
+func RespondOK(c *gin.Context) {
+	respondJSON(c, errors.NoError.Code(), errors.NoError.Error())
+}
+
+// RespondSuccess writes message with JSON format into the response body with successful status code.
+func RespondSuccess(c *gin.Context, v interface{}) {
+	respondJSON(c, errors.NoError.Code(), v)
+}
+
+// respondJSON is the lowest layer of RespondXXX functions, which calls gin API.
+// The body of the respond is JSON format.
+func respondJSON(c *gin.Context, status int, v interface{}) {
+	body, err := json.MarshalIndent(v, "", "	")
+	if err != nil {
+		logger.Error(err.Error())
+	}
+	c.Set(resBodyKey, body)
+	c.Data(status, "application/json; charset=utf-8", body)
 }

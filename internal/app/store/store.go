@@ -10,5 +10,7 @@ type Model gorm.Model
 // Store defines interface to manage storage.
 type Store interface {
 	AutoMigrate(values ...interface{}) error
+	Create(value interface{}) error
+	Find(out interface{}, where ...interface{}) error 
 	Close() error
 }

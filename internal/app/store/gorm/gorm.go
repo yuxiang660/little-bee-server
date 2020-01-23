@@ -117,3 +117,13 @@ func (s *storeGorm)Close() error{
 func (s *storeGorm) AutoMigrate(values ...interface{}) error {
 	return s.db.AutoMigrate(values...).Error
 }
+
+// Create insert the value into database
+func (s *storeGorm) Create(value interface{}) error {
+	return s.db.Create(value).Error
+}
+
+// Find find records that match given conditions
+func (s *storeGorm) Find(out interface{}, where ...interface{}) error {
+	return s.db.Find(out, where...).Error
+}

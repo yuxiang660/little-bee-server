@@ -36,6 +36,7 @@ func RegisterAPI(router *gin.Engine, container *dig.Container) error {
 				// URL: /api/v1/pub/users
 				gUsers := pub.Group("users")
 				{
+					gUsers.GET("", userController.Query)
 					gUsers.POST("", userController.Create)
 				}
 			}
