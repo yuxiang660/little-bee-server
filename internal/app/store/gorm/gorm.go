@@ -74,7 +74,7 @@ type storeGorm struct {
 }
 
 // New creates an autherJWT object based on user configuration.
-func New(opts ...Option) (store.Gorm, error) {
+func New(opts ...Option) (store.SQL, error) {
 	var o options
 	for _, opt := range opts {
 		opt(&o)
