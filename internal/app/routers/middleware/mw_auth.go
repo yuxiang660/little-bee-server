@@ -6,6 +6,7 @@ import (
 	"github.com/yuxiang660/little-bee-server/internal/app/config"
 	"github.com/yuxiang660/little-bee-server/internal/app/errors"
 	"github.com/yuxiang660/little-bee-server/internal/app/ginhelper"
+	"github.com/yuxiang660/little-bee-server/internal/app/logger"
 )
 
 // UserAuthMiddleware verifies user's authentication. 
@@ -14,11 +15,8 @@ func UserAuthMiddleware(a auther.Auther, skippers ...SkipperFunc) gin.HandlerFun
 		if t := ginhelper.GetToken(c); t != "" {
 			id, err := a.ParseUserID(t)
 			if err != nil {
-				if err == errors.ErrInvalidToken {
-					ginhelper.RespondError(c, errors.ErrInvalidToken)
-					return
-				}
-				c.String(errors.ErrInternalServerError.Code(), err.Error())
+				logger.Error(err.Error())
+				ginhelper.RespondError(c, errors.ErrInvalidToken)
 				return
 			} else if id != "" {
 				ginhelper.SetUserID(c, id)
