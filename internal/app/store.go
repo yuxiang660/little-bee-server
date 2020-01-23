@@ -20,7 +20,7 @@ func InjectStore(container *dig.Container) func() {
 	)
 	handleError(err)
 
-	err = container.Provide(func() store.Store {
+	err = container.Provide(func() store.Gorm {
 		return db
 	})
 	handleError(err)

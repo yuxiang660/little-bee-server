@@ -8,11 +8,11 @@ import (
 
 // User defines the structure about user model.
 type User struct {
-	db store.Store
+	db store.Gorm
 }
 
 // New creates user model.
-func New(db store.Store) (model.IUser, error) {
+func New(db store.Gorm) (model.IUser, error) {
 	err := db.AutoMigrate(&schema.User{})
 
 	return &User{
