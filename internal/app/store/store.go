@@ -7,8 +7,8 @@ import (
 // Model is alias of gorm.Model
 type Model gorm.Model
 
-// Store defines interface to manage storage.
-type Store interface {
+// Gorm defines interface to manage database.
+type Gorm interface {
 	AutoMigrate(values ...interface{}) error
 	Create(value interface{}) error
 	Find(out interface{}, where ...interface{}) error 
