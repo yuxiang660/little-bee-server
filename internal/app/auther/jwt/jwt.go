@@ -165,13 +165,33 @@ func (a *autherJWT) parseToken(tokenString string) (*jwt.StandardClaims, error) 
 	return token.Claims.(*jwt.StandardClaims), nil
 }
 
+// DestroyToken cancels a valid access token after clients logout.
+// Store the canceled token into database for the check if clients use the token again.
+func (a *autherJWT) DestroyToken(accessToken string) error {
+	claims, err := a.parseToken(accessToken)
+	if err != nil {
+		return err
+	}
+
+	return a.db.Set(accessToken, "place_holder", time.Unix(claims.ExpiresAt, 0).Sub(time.Now()))
+}
+
 // ParseUserID parses a token.
 // If the token is invalid, returns ErrInvalidToken error.
 // If the token is valid, returns user id string of the token user. 
-func (a *autherJWT) ParseUserID(tokenString string) (string, error) {
-	claims, err := a.parseToken(tokenString)
+func (a *autherJWT) ParseUserID(accessToken string) (string, error) {
+	claims, err := a.parseToken(accessToken)
 	if err != nil {
 		return "", err
+	}
+
+	var exists bool
+	exists, err = a.db.Exist(accessToken)
+	if err != nil {
+		return "", err
+	}
+	if exists {
+		return "", errors.ErrInvalidToken
 	}
 
 	return claims.Subject, nil

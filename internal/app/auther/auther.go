@@ -11,6 +11,7 @@ type TokenInfo interface {
 // Auther defines the infterface to manager a token.
 type Auther interface {
 	GenerateToken(userID string) (TokenInfo, error)
+	DestroyToken(accessToken string) error
 	ParseUserID(accessToken string) (string, error)
 	Close() error
 }

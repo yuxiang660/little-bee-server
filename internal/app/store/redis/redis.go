@@ -86,6 +86,10 @@ func (s *storeRedis) Get(key string) (string, error) {
 	return "", nil
 }
 
+func (s *storeRedis) Exist(key string) (bool, error) {
+	return false, nil
+}
+
 func (s *storeRedis) Close() error {
 	return nil
 }

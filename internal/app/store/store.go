@@ -21,5 +21,6 @@ type SQL interface {
 type NoSQL interface {
 	Set(key, value string, expiration time.Duration) error
 	Get(key string) (string, error)
+	Exist(key string) (bool, error)
 	Close() error
 }

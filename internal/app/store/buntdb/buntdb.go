@@ -58,6 +58,10 @@ func (s *storeBuntdb) Get(key string) (string, error) {
 	return "", nil
 }
 
+func (s *storeBuntdb) Exist(key string) (bool, error) {
+	return false, nil
+}
+
 func (s *storeBuntdb) Close() error {
 	return nil
 }
