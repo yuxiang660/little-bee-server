@@ -13,6 +13,7 @@ type Config struct {
 	DocDir      string      `toml:"doc_dir"`
 	Root        Root        `toml:"root"`
 	HTTP        HTTP        `toml:"http"`
+	CORS        CORS        `toml:"cors"`
 	Log         Log         `toml:"log"`
 	JWTAuth     JWTAuth     `toml:"jwt_auth"`
 	Redis       Redis       `toml:"redis"`
@@ -68,6 +69,16 @@ type HTTP struct {
 	CertFile        string `toml:"cert_file"`
 	KeyFile         string `toml:"key_file"`
 	ShutdownTimeout int    `toml:"shutdown_timeout"`
+}
+
+// CORS defines the structure of CORS configuration in config file.
+type CORS struct {
+	Enable           bool     `toml:"enable"`
+	AllowOrigins     []string `toml:"allow_origins"`
+	AllowMethods     []string `toml:"allow_methods"`
+	AllowHeaders     []string `toml:"allow_headers"`
+	AllowCredentials bool     `toml:"allow_credentials"`
+	MaxAge           int      `toml:"max_age"`
 }
 
 // Log defines the structure of log configuration in config file.

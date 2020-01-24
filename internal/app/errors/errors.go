@@ -17,7 +17,7 @@ type Error interface {
 
 // new returns an internal error that has implemented Error interface.
 func newInternalError(text string) Error {
-	return &errorImpl{
+	return &impl{
 		statusCode: http.StatusInternalServerError,
 		message: text,
 	}
@@ -25,29 +25,29 @@ func newInternalError(text string) Error {
 
 // new returns an HTTP error that has implemented Error interface.
 func newHTTPError(code int, text string) Error {
-	return &errorImpl{
+	return &impl{
 		statusCode: code,
 		message: text,
 	}
 }
 
-// errorImpl is a implementation of Error.
-type errorImpl struct {
+// impl is a implementation of Error.
+type impl struct {
 	statusCode int
 	message string
 }
 
-func (e *errorImpl) Error() string {
+func (e *impl) Error() string {
 	return e.message
 }
 
-func (e *errorImpl) Body() response {
+func (e *impl) Body() response {
 	return response{
 		"code": e.statusCode,
 		"message": e.message,
 	}
 }
 
-func (e *errorImpl) Code() int {
+func (e *impl) Code() int {
 	return e.statusCode
 }

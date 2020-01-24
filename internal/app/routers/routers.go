@@ -21,6 +21,10 @@ func InitRouters(container *dig.Container) (*gin.Engine, error) {
 	router.Use(middleware.LoggerMiddleware(middleware.HandlePrefixList([]string{"/api/"}...)))
 	router.Use(middleware.RecoveryMiddleware())
 
+	if cfg.CORS.Enable {
+		router.Use(middleware.CORSMiddleware())
+	}
+
 	err := api.RegisterAPI(router, container)
 
 	if dir := cfg.DocDir; dir != "" {

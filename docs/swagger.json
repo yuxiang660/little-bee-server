@@ -16,5 +16,105 @@
     },
     "host": "127.0.0.1:8181",
     "basePath": "/",
-    "paths": {}
+    "paths": {
+        "/api/v1/pub/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Login with username and password.",
+                "parameters": [
+                    {
+                        "description": "login with username and password",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.LoginParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.LoginTokenInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request parameters or invalid username/password",
+                        "schema": {
+                            "$ref": "#/definitions/errors.impl"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pub/login/exit": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Logout with a token.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/errors.impl"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "errors.impl": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "statusCode": {
+                    "type": "integer"
+                }
+            }
+        },
+        "schema.LoginParam": {
+            "type": "object",
+            "required": [
+                "password",
+                "user_name"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "schema.LoginTokenInfo": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "expires_at": {
+                    "type": "integer"
+                },
+                "token_type": {
+                    "type": "string"
+                }
+            }
+        }
+    }
 }

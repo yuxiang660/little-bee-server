@@ -24,6 +24,21 @@ key_file = ""
 # waiting time after http close (s)
 shutdown_timeout = 30
 
+# CORS configuration
+[cors]
+# enable CORS or not
+enable = true
+# allow origin list (* allow all origins), Access-Control-Allow-Origin
+allow_origins = ["*"]
+# allow methods, Access-Control-Request-Method
+allow_methods = ["GET","POST","PUT","DELETE","PATCH"]
+# Allow other headers except for 6 default headers, Access-Control-Expose-Headers
+allow_headers = []
+# allow cookie and HTTP credentials or not, Access-Control-Allow-Credentials
+allow_credentials = false
+# time of caching preflight request results (s)
+max_age = 7200
+
 # log configuration
 [log]
 # log level (1:fatal 2:error,3:warn,4:info,5:debug)

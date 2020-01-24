@@ -11,5 +11,8 @@ build:
 start:
 	go run cmd/server/main.go -c ./configs/config.toml
 
+doc:
+	swag init -g ./internal/app/routers/swagger.go -o ./docs
+
 clean:
 	rm -rf $(EXPORT_FOLDER)

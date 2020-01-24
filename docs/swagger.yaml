@@ -1,4 +1,31 @@
 basePath: /
+definitions:
+  errors.impl:
+    properties:
+      message:
+        type: string
+      statusCode:
+        type: integer
+    type: object
+  schema.LoginParam:
+    properties:
+      password:
+        type: string
+      user_name:
+        type: string
+    required:
+    - password
+    - user_name
+    type: object
+  schema.LoginTokenInfo:
+    properties:
+      access_token:
+        type: string
+      expires_at:
+        type: integer
+      token_type:
+        type: string
+    type: object
 host: 127.0.0.1:8181
 info:
   contact:
@@ -8,7 +35,43 @@ info:
   license: {}
   title: Little Bee Server
   version: 0.1.0
-paths: {}
+paths:
+  /api/v1/pub/login:
+    post:
+      parameters:
+      - description: login with username and password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/schema.LoginParam'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.LoginTokenInfo'
+        "400":
+          description: bad request parameters or invalid username/password
+          schema:
+            $ref: '#/definitions/errors.impl'
+      summary: Login with username and password.
+      tags:
+      - Login
+  /api/v1/pub/login/exit:
+    post:
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        type: string
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/errors.impl'
+      summary: Logout with a token.
+      tags:
+      - Login
 schemes:
 - http
 - https
