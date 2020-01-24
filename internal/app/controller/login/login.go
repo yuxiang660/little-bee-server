@@ -50,7 +50,14 @@ func (l *Login) In(c *gin.Context) {
 		if user.Password == cred.Password {
 			userID := user.RecordID
 			ginhelper.SetUserID(c, userID)
-			ginhelper.RespondOK(c)
+
+			tokenInfo, err := l.auth.GenerateToken(userID)
+			if err != nil {
+				logger.Error(err.Error())
+				ginhelper.RespondError(c, errors.ErrInternalServerError)
+			}
+
+			ginhelper.RespondSuccess(c, tokenInfo)
 			return
 		}
 	}
@@ -59,7 +66,16 @@ func (l *Login) In(c *gin.Context) {
 }
 
 // Out destroys the token for the login client.
-// TODO: it is a placeholder here, implement this function.
 func (l *Login) Out(c *gin.Context) {
+	userID := ginhelper.GetUserID(c)
+	if userID != "" {
+		token := ginhelper.GetToken(c)
+		err := l.auth.DestroyToken(token)
+		if err != nil {
+			// Swallow the error since client is logout.
+			logger.Error(err.Error())
+		}
+	}
+
 	ginhelper.RespondOK(c)
 }

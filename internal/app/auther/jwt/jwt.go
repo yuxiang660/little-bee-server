@@ -10,6 +10,7 @@ import (
 	"github.com/yuxiang660/little-bee-server/internal/app/store"
 	"github.com/yuxiang660/little-bee-server/internal/app/store/buntdb"
 	"github.com/yuxiang660/little-bee-server/internal/app/store/redis"
+	"github.com/yuxiang660/little-bee-server/internal/app/model/schema"
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
@@ -130,7 +131,7 @@ func New(opts ...Option) (auther.Auther, error) {
 }
 
 // GenerateToken generates a token for a user.
-func (a *autherJWT) GenerateToken(userID string) (auther.TokenInfo, error) {
+func (a *autherJWT) GenerateToken(userID string) (schema.LoginTokenInfo, error) {
 	now := time.Now()
 	expiresAt := now.Add(time.Duration(a.expired) * time.Second).Unix()
 
@@ -143,15 +144,14 @@ func (a *autherJWT) GenerateToken(userID string) (auther.TokenInfo, error) {
 
 	tokenString, err := token.SignedString(a.signingKey)
 	if err != nil {
-		return nil, err
+		return schema.LoginTokenInfo{}, err
 	}
 
-	tokenInfo := &tokenInfo{
-		ExpiresAt:   expiresAt,
-		TokenType:   a.tokenType,
+	return schema.LoginTokenInfo{
 		AccessToken: tokenString,
-	}
-	return tokenInfo, nil
+		TokenType: a.tokenType,
+		ExpiresAt: expiresAt,
+	}, nil
 }
 
 func (a *autherJWT) parseToken(tokenString string) (*jwt.StandardClaims, error) {
