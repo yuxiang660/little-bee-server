@@ -25,12 +25,30 @@ func New(a auther.Auther, u model.IUser) controller.ILogin {
 	}
 }
 
+func (l *Login) respondWithToken(c *gin.Context, userID string) {
+	ginhelper.SetUserID(c, userID)
+
+	tokenInfo, err := l.auth.GenerateToken(userID)
+	if err != nil {
+		logger.Error(err.Error())
+		ginhelper.RespondError(c, errors.ErrInternalServerError)
+	}
+
+	ginhelper.RespondSuccess(c, tokenInfo)
+}
+
 // In verifies username and password and generate a token to client.
 func (l *Login) In(c *gin.Context) {
 	var cred schema.LoginParam
 	if err := c.ShouldBind(&cred); err != nil {
 		logger.Error(err.Error())
 		ginhelper.RespondError(c, errors.ErrBadRequestParam)
+		return
+	}
+
+	root := l.users.GetRootUser()
+	if cred.UserName == root.UserName && cred.Password == root.Password {
+		l.respondWithToken(c, root.RecordID)
 		return
 	}
 
@@ -48,16 +66,7 @@ func (l *Login) In(c *gin.Context) {
 
 	for _, user := range results.Users {
 		if user.Password == cred.Password {
-			userID := user.RecordID
-			ginhelper.SetUserID(c, userID)
-
-			tokenInfo, err := l.auth.GenerateToken(userID)
-			if err != nil {
-				logger.Error(err.Error())
-				ginhelper.RespondError(c, errors.ErrInternalServerError)
-			}
-
-			ginhelper.RespondSuccess(c, tokenInfo)
+			l.respondWithToken(c, user.RecordID)
 			return
 		}
 	}

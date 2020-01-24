@@ -1,6 +1,7 @@
 package user
 
 import (
+	"github.com/yuxiang660/little-bee-server/internal/app/config"
 	"github.com/yuxiang660/little-bee-server/internal/app/model"
 	"github.com/yuxiang660/little-bee-server/internal/app/model/schema"
 	"github.com/yuxiang660/little-bee-server/internal/app/store"
@@ -35,4 +36,14 @@ func (u *User) Query(username string) (schema.UserQueryResults, error) {
 	err := u.db.Find(&users, "user_name = ?", username)
 
 	return schema.UserQueryResults{Users : users}, err
+}
+
+// GetRootUser returns root user info which comes from configuration file.
+func (u *User) GetRootUser() schema.User {
+	root := config.Global().Root
+	return schema.User{
+		RecordID: root.UserName,
+		UserName: root.UserName,
+		Password: root.Password,
+	}
 }
