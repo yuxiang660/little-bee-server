@@ -1,6 +1,9 @@
 # run mode (debug,test,release)
 run_mode = "debug"
 
+# doc directory
+doc_dir = "./docs"
+
 # root user
 [root]
 # user name

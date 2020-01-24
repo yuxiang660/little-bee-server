@@ -10,6 +10,7 @@ import (
 // Config defines the structure of all configurations in config file(./configs/config.toml).
 type Config struct {
 	RunMode     string      `toml:"run_mode"`
+	DocDir      string      `toml:"doc_dir"`
 	Root        Root        `toml:"root"`
 	HTTP        HTTP        `toml:"http"`
 	Log         Log         `toml:"log"`

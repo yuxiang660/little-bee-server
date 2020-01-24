@@ -1,0 +1,20 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Restful API description about little bee server",
+        "title": "Little Bee Server",
+        "contact": {
+            "name": "Little Bee",
+            "email": "yuxiang660@gmail.com"
+        },
+        "license": {},
+        "version": "0.1.0"
+    },
+    "host": "127.0.0.1:8181",
+    "basePath": "/",
+    "paths": {}
+}

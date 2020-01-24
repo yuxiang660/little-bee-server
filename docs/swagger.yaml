@@ -1,0 +1,15 @@
+basePath: /
+host: 127.0.0.1:8181
+info:
+  contact:
+    email: yuxiang660@gmail.com
+    name: Little Bee
+  description: Restful API description about little bee server
+  license: {}
+  title: Little Bee Server
+  version: 0.1.0
+paths: {}
+schemes:
+- http
+- https
+swagger: "2.0"
