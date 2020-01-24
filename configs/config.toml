@@ -40,6 +40,19 @@ expired = 7200
 signing_key = "GINADMIN"
 # JWT attribute (supported：HS512/HS384/HS512)
 signing_method = "HS512"
+# store type (supported: buntdb/redis)
+store = "buntdb"
+# buntdb path, buntdb supports to store data in file or memory (supported: [filepath]/:memory:) 
+buntdb_path = "export/data/little-bee-auther.db"
+# redis database number, every redis supports 16 databases (supported: 0 ~ 15)
+redis_db = 1
+
+# redis configuration
+[redis]
+# redis address
+addr = "127.0.0.1:6379"
+# redis password
+password = ""
 
 # gorm configuration
 [gorm]
@@ -57,5 +70,4 @@ max_idle_conns = 50
 # sqlite database configuration
 [sqlite3]
 # path of sqlite database
-path = "export/data/little-bee.db"
-
+path = "export/data/little-bee-sql.db"

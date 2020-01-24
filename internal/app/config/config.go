@@ -1,6 +1,8 @@
 package config
 
 import (
+	"fmt"
+
 	"github.com/BurntSushi/toml"
 	"github.com/yuxiang660/little-bee-server/internal/app/logger"
 )
@@ -12,6 +14,7 @@ type Config struct {
 	HTTP        HTTP        `toml:"http"`
 	Log         Log         `toml:"log"`
 	JWTAuth     JWTAuth     `toml:"jwt_auth"`
+	Redis       Redis       `toml:"redis"`
 	Gorm        Gorm        `toml:"gorm"`
 	Sqlite3     Sqlite3     `toml:"sqlite3"`
 }
@@ -79,6 +82,32 @@ type JWTAuth struct {
 	SigningMethod string `toml:"signing_method"`
 	SigningKey    string `toml:"signing_key"`
 	Expired       int    `toml:"expired"`
+	Store         string `toml:"store"`
+	BuntdbPath    string `toml:"buntdb_path"`
+	RedisDB       int    `toml:"redis_db"`
+}
+
+// Redis defines the structure of Buntdb about Redis storage configuration in config file.
+type Redis struct {
+	Addr     string `toml:"addr"`
+	Password string `toml:"password"`
+}
+
+// DSN returns DSN string for JWTAuth database connenction. 
+func (j JWTAuth) DSN() string {
+	var dsn string
+
+	switch j.Store {
+	case "buntdb":
+		dsn = global.JWTAuth.BuntdbPath
+	case "redis":
+		dsn = fmt.Sprintf("%s,%s,%d", global.Redis.Addr, global.Redis.Password, global.JWTAuth.RedisDB)
+	default:
+		logger.Error("Unknow JWTAuth Database")
+		return ""
+	}
+
+	return dsn
 }
 
 // Gorm defines the structure of gorm configuration in config file.
@@ -100,7 +129,7 @@ func (c *Config) IsDebugMode() bool {
 	return c.RunMode == "debug"
 }
 
-// DSN returns DSN string for database connenction. 
+// DSN returns DSN string for Gorm database connenction. 
 func (g Gorm) DSN() string {
 	var dsn string
 
@@ -108,7 +137,7 @@ func (g Gorm) DSN() string {
 	case "sqlite3":
 		dsn = global.Sqlite3.Path
 	default:
-		logger.Error("Unknow Database")
+		logger.Error("Unknow Gorm Database")
 		return ""
 	}
 

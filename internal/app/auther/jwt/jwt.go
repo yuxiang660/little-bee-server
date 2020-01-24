@@ -7,6 +7,9 @@ import (
 
 	"github.com/yuxiang660/little-bee-server/internal/app/auther"
 	"github.com/yuxiang660/little-bee-server/internal/app/errors"
+	"github.com/yuxiang660/little-bee-server/internal/app/store"
+	"github.com/yuxiang660/little-bee-server/internal/app/store/buntdb"
+	"github.com/yuxiang660/little-bee-server/internal/app/store/redis"
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
@@ -15,6 +18,8 @@ type options struct {
 	expired       int
 	signingKey    string
 	signingMethod string
+	store         string
+	dsn           string
 }
 
 var defaultOptions = options{
@@ -22,6 +27,8 @@ var defaultOptions = options{
 	expired:       7200,
 	signingKey:    "GINADMIN",
 	signingMethod: "HS512",
+	store:         "buntdb",
+	dsn:           "export/data/little-bee-auther.db",
 }
 
 // Option defines function signature to set options.
@@ -48,6 +55,20 @@ func SetSigningMethod(method string) Option {
 	}
 }
 
+// SetStore returns an action to set store type for auther.
+func SetStore(strore string) Option {
+	return func(o *options) {
+		o.store = strore
+	}
+}
+
+// SetDSN returns an action to set dsn string for store connenction.
+func SetDSN(dsn string) Option {
+	return func(o *options) {
+		o.dsn = dsn
+	}
+}
+
 // autherJWT defines a structure to store JWT Authentication properties.
 type autherJWT struct {
 	tokenType     string
@@ -55,6 +76,7 @@ type autherJWT struct {
 	signingKey    interface{}
 	signingMethod jwt.SigningMethod
 	keyfunc       jwt.Keyfunc
+	db            store.NoSQL
 }
 
 // New creates an autherJWT object based on user configuration.
@@ -86,6 +108,23 @@ func New(opts ...Option) (auther.Auther, error) {
 		}
 		return []byte(o.signingKey), nil
 	}
+
+	var db store.NoSQL
+	var err error
+	switch o.store {
+	case "buntdb":
+		db, err = buntdb.New(buntdb.SetDSN(o.dsn))
+	case "redis":
+		db, err = redis.New(redis.SetDSN(o.dsn))
+	default:
+		err = errors.ErrUnknowDatabase
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	a.db = db
 
 	return &a, nil
 }

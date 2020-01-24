@@ -18,6 +18,8 @@ func InjectAuther(container *dig.Container) func() {
 		jwt.SetExpired(cfg.Expired),
 		jwt.SetSigningKey(cfg.SigningKey),
 		jwt.SetSigningMethod(cfg.SigningMethod),
+		jwt.SetStore(cfg.Store),
+		jwt.SetDSN(cfg.DSN()),
 	)
 	handleError(err)
 

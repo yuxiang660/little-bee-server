@@ -1,4 +1,4 @@
-// Wrapper of gorm. Do not use gorm directly in the project.
+// Wrapper of gorm. Do not use other gorm package directly in the project.
 
 package gorm
 
@@ -73,7 +73,7 @@ type storeGorm struct {
 	db *gorm.DB
 }
 
-// New creates an autherJWT object based on user configuration.
+// New creates a SQL store object based on user configuration.
 func New(opts ...Option) (store.SQL, error) {
 	var o options
 	for _, opt := range opts {
