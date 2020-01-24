@@ -24,7 +24,7 @@ func New(m model.IUser) controller.IUser {
 
 // Create creates a user with username and password.
 func (u *User) Create(c *gin.Context) {
-	var user schema.User
+	var user schema.LoginParam
 	if err := c.ShouldBind(&user); err != nil {
 		logger.Error(err.Error())
 		ginhelper.RespondError(c, errors.ErrBadRequestParam)

@@ -47,7 +47,7 @@ func (l *Login) In(c *gin.Context) {
 	}
 
 	root := l.users.GetRootUser()
-	if cred.UserName == root.UserName && cred.Password == root.Password {
+	if l.users.VerifyCredential(cred, root) {
 		l.respondWithToken(c, root.RecordID)
 		return
 	}
@@ -65,7 +65,7 @@ func (l *Login) In(c *gin.Context) {
 	}
 
 	for _, user := range results.Users {
-		if user.Password == cred.Password {
+		if l.users.VerifyCredential(cred, user) {
 			l.respondWithToken(c, user.RecordID)
 			return
 		}

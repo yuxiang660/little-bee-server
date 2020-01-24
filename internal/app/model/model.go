@@ -6,7 +6,8 @@ import (
 
 // IUser defines the interface to manager user model.
 type IUser interface {
-	Create(item schema.User) error
+	Create(item schema.LoginParam) error
 	Query(username string) (schema.UserQueryResults, error)
 	GetRootUser() schema.User
+	VerifyCredential(cred schema.LoginParam, user schema.User) bool
 }
