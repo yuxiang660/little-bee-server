@@ -8,8 +8,13 @@ import (
 type User struct {
 	store.Model
 	RecordID  string    `json:"record_id"`
-	UserName  string    `json:"user_name" form:"user_name" binding:"required"`
+	UserName  string    `json:"user_name" binding:"required"`
 	Password  string    `json:"password"`
+}
+
+// UserQuery defines query form to query users with a user name.
+type UserQuery struct {
+	UserName  string    `form:"user_name"`
 }
 
 // UserQueryResults defines the return data from user query function.

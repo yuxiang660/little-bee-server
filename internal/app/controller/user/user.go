@@ -43,7 +43,7 @@ func (u *User) Create(c *gin.Context) {
 // Query query users with a username from client.
 // Query sting: ...?user_name=xxx
 func (u *User) Query(c *gin.Context) {
-	var user schema.User
+	var user schema.UserQuery
 	if err := c.ShouldBind(&user); err != nil {
 		logger.Error(err.Error())
 		ginhelper.RespondError(c, errors.ErrBadRequestParam)
