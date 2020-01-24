@@ -177,3 +177,7 @@ func (a *autherJWT) ParseUserID(tokenString string) (string, error) {
 	return claims.Subject, nil
 }
 
+// Close releases the resources of Auther after close. 
+func (a *autherJWT) Close() error {
+	return a.db.Close()
+}

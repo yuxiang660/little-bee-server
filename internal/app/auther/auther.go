@@ -12,4 +12,5 @@ type TokenInfo interface {
 type Auther interface {
 	GenerateToken(userID string) (TokenInfo, error)
 	ParseUserID(accessToken string) (string, error)
+	Close() error
 }

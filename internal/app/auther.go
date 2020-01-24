@@ -28,5 +28,7 @@ func InjectAuther(container *dig.Container) func() {
 	})
 	handleError(err)
 
-	return nil
+	return func() {
+		a.Close()
+	}
 }
