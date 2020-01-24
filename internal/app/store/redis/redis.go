@@ -79,17 +79,33 @@ func New(opts ...Option) (store.NoSQL, error) {
 }
 
 func (s *storeRedis) Set(key, value string, expiration time.Duration) error {
-	return nil
+	cmd := s.db.Set(key, value, expiration)
+	return cmd.Err()
 }
 
 func (s *storeRedis) Get(key string) (string, error) {
-	return "", nil
+	val, err :=  s.db.Get(key).Result()
+	if err != nil {
+		return "", err
+	}
+
+	return val, nil
 }
 
 func (s *storeRedis) Exist(key string) (bool, error) {
-	return false, nil
+	_, err := s.Get(key)
+
+	if err == redis.Nil {
+		return false, nil
+	}
+
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
 }
 
 func (s *storeRedis) Close() error {
-	return nil
+	return s.db.Close()
 }

@@ -51,17 +51,44 @@ func New(opts ...Option) (store.NoSQL, error) {
 }
 
 func (s *storeBuntdb) Set(key, value string, expiration time.Duration) error {
-	return nil
+	return s.db.Update(func(tx *buntdb.Tx) error {
+		var opts *buntdb.SetOptions
+		if expiration > 0 {
+			opts = &buntdb.SetOptions{Expires: true, TTL: expiration}
+		}
+		_, _, err := tx.Set(key, value, opts)
+		return err
+	})
 }
 
 func (s *storeBuntdb) Get(key string) (string, error) {
-	return "", nil
+	var value string
+	err := s.db.View(func(tx *buntdb.Tx) error {
+		val, err := tx.Get(key)
+		if err != nil {
+			return err
+		}
+		value = val
+		return nil 
+	})
+
+	return value, err
 }
 
 func (s *storeBuntdb) Exist(key string) (bool, error) {
-	return false, nil
+	_, err := s.Get(key)
+
+	if err == buntdb.ErrNotFound {
+		return false, nil
+	}
+
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
 }
 
 func (s *storeBuntdb) Close() error {
-	return nil
+	return s.db.Close()
 }
