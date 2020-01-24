@@ -40,9 +40,9 @@ func (l *Login) respondWithToken(c *gin.Context, userID string) {
 // In verifies username and password and generate a token to client.
 // @Tags Login
 // @Summary Login with username and password.
-// @Param user body schema.LoginParam true "login with username and password"
+// @Param user body schema.LoginParam true "Login with username and password"
 // @Success 200 {object} schema.LoginTokenInfo
-// @Failure 400 {object} errors.impl "bad request parameters or invalid username/password"
+// @Failure 400 {object} errors.impl "Bad request parameters or invalid username/password"
 // @Router /api/v1/pub/login [post]
 func (l *Login) In(c *gin.Context) {
 	var cred schema.LoginParam
@@ -84,7 +84,7 @@ func (l *Login) In(c *gin.Context) {
 // @Tags Login
 // @Summary Logout with a token.
 // @Param Authorization header string false "Bearer token"
-// @Success 200 {object} errors.impl "ok"
+// @Success 200 {object} errors.impl "Ok"
 // @Router /api/v1/pub/login/exit [post]
 func (l *Login) Out(c *gin.Context) {
 	userID := ginhelper.GetUserID(c)

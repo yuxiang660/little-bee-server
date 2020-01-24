@@ -26,6 +26,24 @@ definitions:
       token_type:
         type: string
     type: object
+  schema.User:
+    properties:
+      password:
+        type: string
+      record_id:
+        type: string
+      user_name:
+        type: string
+    required:
+    - user_name
+    type: object
+  schema.UserQueryResults:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/schema.User'
+        type: array
+    type: object
 host: 127.0.0.1:8181
 info:
   contact:
@@ -39,7 +57,7 @@ paths:
   /api/v1/pub/login:
     post:
       parameters:
-      - description: login with username and password
+      - description: Login with username and password
         in: body
         name: user
         required: true
@@ -51,7 +69,7 @@ paths:
           schema:
             $ref: '#/definitions/schema.LoginTokenInfo'
         "400":
-          description: bad request parameters or invalid username/password
+          description: Bad request parameters or invalid username/password
           schema:
             $ref: '#/definitions/errors.impl'
       summary: Login with username and password.
@@ -66,12 +84,52 @@ paths:
         type: string
       responses:
         "200":
-          description: ok
+          description: Ok
           schema:
             $ref: '#/definitions/errors.impl'
       summary: Logout with a token.
       tags:
       - Login
+  /api/v1/pub/users:
+    get:
+      parameters:
+      - description: Username to query
+        in: query
+        name: user_name
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Users
+          schema:
+            $ref: '#/definitions/schema.UserQueryResults'
+        "400":
+          description: Bad request parameters
+          schema:
+            $ref: '#/definitions/errors.impl'
+      summary: Query users with username.
+      tags:
+      - User
+    post:
+      parameters:
+      - description: Create a user with username and password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/schema.LoginParam'
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/errors.impl'
+        "400":
+          description: Bad request parameters
+          schema:
+            $ref: '#/definitions/errors.impl'
+      summary: Create a user with username and password.
+      tags:
+      - User
 schemes:
 - http
 - https

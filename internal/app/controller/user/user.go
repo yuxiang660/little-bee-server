@@ -23,6 +23,12 @@ func New(m model.IUser) controller.IUser {
 }
 
 // Create creates a user with username and password.
+// @Tags User
+// @Summary Create a user with username and password.
+// @Param user body schema.LoginParam true "Create a user with username and password"
+// @Success 200 {object} errors.impl "ok"
+// @Failure 400 {object} errors.impl "Bad request parameters"
+// @Router /api/v1/pub/users [post]
 func (u *User) Create(c *gin.Context) {
 	var user schema.LoginParam
 	if err := c.ShouldBind(&user); err != nil {
@@ -41,7 +47,12 @@ func (u *User) Create(c *gin.Context) {
 }
 
 // Query query users with a username from client.
-// Query sting: ...?user_name=xxx
+// @Tags User
+// @Summary Query users with username.
+// @Param user_name query string true "Username to query"
+// @Success 200 {object} schema.UserQueryResults "Users"
+// @Failure 400 {object} errors.impl "Bad request parameters"
+// @Router /api/v1/pub/users [get]
 func (u *User) Query(c *gin.Context) {
 	var user schema.UserQuery
 	if err := c.ShouldBind(&user); err != nil {
