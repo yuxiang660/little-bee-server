@@ -25,7 +25,7 @@
                 "summary": "Login with username and password.",
                 "parameters": [
                     {
-                        "description": "Login with username and password",
+                        "description": "JSON format username and password",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -36,7 +36,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Token information",
                         "schema": {
                             "$ref": "#/definitions/schema.LoginTokenInfo"
                         }
@@ -83,7 +83,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Username to query",
+                        "description": "Username to query string: ...?user_name=xxx",
                         "name": "user_name",
                         "in": "query",
                         "required": true
@@ -91,7 +91,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Users",
+                        "description": "All matched users",
                         "schema": {
                             "$ref": "#/definitions/schema.UserQueryResults"
                         }

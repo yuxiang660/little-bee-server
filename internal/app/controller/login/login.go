@@ -40,8 +40,8 @@ func (l *Login) respondWithToken(c *gin.Context, userID string) {
 // In verifies username and password and generate a token to client.
 // @Tags Login
 // @Summary Login with username and password.
-// @Param user body schema.LoginParam true "Login with username and password"
-// @Success 200 {object} schema.LoginTokenInfo
+// @Param user body schema.LoginParam true "JSON format username and password"
+// @Success 200 {object} schema.LoginTokenInfo "Token information"
 // @Failure 400 {object} errors.impl "Bad request parameters or invalid username/password"
 // @Router /api/v1/pub/login [post]
 func (l *Login) In(c *gin.Context) {

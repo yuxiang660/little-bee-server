@@ -57,7 +57,7 @@ paths:
   /api/v1/pub/login:
     post:
       parameters:
-      - description: Login with username and password
+      - description: JSON format username and password
         in: body
         name: user
         required: true
@@ -65,7 +65,7 @@ paths:
           $ref: '#/definitions/schema.LoginParam'
       responses:
         "200":
-          description: OK
+          description: Token information
           schema:
             $ref: '#/definitions/schema.LoginTokenInfo'
         "400":
@@ -93,14 +93,14 @@ paths:
   /api/v1/pub/users:
     get:
       parameters:
-      - description: Username to query
+      - description: 'Username to query string: ...?user_name=xxx'
         in: query
         name: user_name
         required: true
         type: string
       responses:
         "200":
-          description: Users
+          description: All matched users
           schema:
             $ref: '#/definitions/schema.UserQueryResults'
         "400":

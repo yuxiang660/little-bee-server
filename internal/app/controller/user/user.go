@@ -49,8 +49,8 @@ func (u *User) Create(c *gin.Context) {
 // Query query users with a username from client.
 // @Tags User
 // @Summary Query users with username.
-// @Param user_name query string true "Username to query"
-// @Success 200 {object} schema.UserQueryResults "Users"
+// @Param user_name query string true "Username to query string: ...?user_name=xxx"
+// @Success 200 {object} schema.UserQueryResults "All matched users"
 // @Failure 400 {object} errors.impl "Bad request parameters"
 // @Router /api/v1/pub/users [get]
 func (u *User) Query(c *gin.Context) {
