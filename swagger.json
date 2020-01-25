@@ -83,7 +83,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Username to query string: ...?user_name=xxx",
+                        "description": "Query string: ...?user_name=xxx",
                         "name": "user_name",
                         "in": "query",
                         "required": true
