@@ -1,0 +1,136 @@
+basePath: /
+definitions:
+  errors.impl:
+    properties:
+      message:
+        type: string
+      statusCode:
+        type: integer
+    type: object
+  schema.LoginParam:
+    properties:
+      password:
+        type: string
+      user_name:
+        type: string
+    required:
+    - password
+    - user_name
+    type: object
+  schema.LoginTokenInfo:
+    properties:
+      access_token:
+        type: string
+      expires_at:
+        type: integer
+      token_type:
+        type: string
+    type: object
+  schema.User:
+    properties:
+      password:
+        type: string
+      record_id:
+        type: string
+      user_name:
+        type: string
+    required:
+    - user_name
+    type: object
+  schema.UserQueryResults:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/schema.User'
+        type: array
+    type: object
+host: 127.0.0.1:8181
+info:
+  contact:
+    email: yuxiang660@gmail.com
+    name: Little Bee
+  description: Restful API description about little bee server
+  license: {}
+  title: Little Bee Server
+  version: 0.1.0
+paths:
+  /api/v1/pub/login:
+    post:
+      parameters:
+      - description: Login with username and password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/schema.LoginParam'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.LoginTokenInfo'
+        "400":
+          description: Bad request parameters or invalid username/password
+          schema:
+            $ref: '#/definitions/errors.impl'
+      summary: Login with username and password.
+      tags:
+      - Login
+  /api/v1/pub/login/exit:
+    post:
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        type: string
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: '#/definitions/errors.impl'
+      summary: Logout with a token.
+      tags:
+      - Login
+  /api/v1/pub/users:
+    get:
+      parameters:
+      - description: Username to query
+        in: query
+        name: user_name
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Users
+          schema:
+            $ref: '#/definitions/schema.UserQueryResults'
+        "400":
+          description: Bad request parameters
+          schema:
+            $ref: '#/definitions/errors.impl'
+      summary: Query users with username.
+      tags:
+      - User
+    post:
+      parameters:
+      - description: Create a user with username and password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/schema.LoginParam'
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/errors.impl'
+        "400":
+          description: Bad request parameters
+          schema:
+            $ref: '#/definitions/errors.impl'
+      summary: Create a user with username and password.
+      tags:
+      - User
+schemes:
+- http
+- https
+swagger: "2.0"

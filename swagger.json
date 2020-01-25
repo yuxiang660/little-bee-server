@@ -1,0 +1,210 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Restful API description about little bee server",
+        "title": "Little Bee Server",
+        "contact": {
+            "name": "Little Bee",
+            "email": "yuxiang660@gmail.com"
+        },
+        "license": {},
+        "version": "0.1.0"
+    },
+    "host": "127.0.0.1:8181",
+    "basePath": "/",
+    "paths": {
+        "/api/v1/pub/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Login with username and password.",
+                "parameters": [
+                    {
+                        "description": "Login with username and password",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.LoginParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.LoginTokenInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request parameters or invalid username/password",
+                        "schema": {
+                            "$ref": "#/definitions/errors.impl"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pub/login/exit": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Logout with a token.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "schema": {
+                            "$ref": "#/definitions/errors.impl"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pub/users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Query users with username.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Username to query",
+                        "name": "user_name",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Users",
+                        "schema": {
+                            "$ref": "#/definitions/schema.UserQueryResults"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errors.impl"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create a user with username and password.",
+                "parameters": [
+                    {
+                        "description": "Create a user with username and password",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.LoginParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/errors.impl"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errors.impl"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "errors.impl": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "statusCode": {
+                    "type": "integer"
+                }
+            }
+        },
+        "schema.LoginParam": {
+            "type": "object",
+            "required": [
+                "password",
+                "user_name"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "schema.LoginTokenInfo": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "expires_at": {
+                    "type": "integer"
+                },
+                "token_type": {
+                    "type": "string"
+                }
+            }
+        },
+        "schema.User": {
+            "type": "object",
+            "required": [
+                "user_name"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "record_id": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "schema.UserQueryResults": {
+            "type": "object",
+            "properties": {
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/schema.User"
+                    }
+                }
+            }
+        }
+    }
+}
