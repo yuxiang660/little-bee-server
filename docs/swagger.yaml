@@ -112,7 +112,7 @@ paths:
       - User
     post:
       parameters:
-      - description: Create a user with username and password
+      - description: JSON format username and password
         in: body
         name: user
         required: true

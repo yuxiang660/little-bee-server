@@ -25,7 +25,7 @@ func New(m model.IUser) controller.IUser {
 // Create creates a user with username and password.
 // @Tags User
 // @Summary Create a user with username and password.
-// @Param user body schema.LoginParam true "Create a user with username and password"
+// @Param user body schema.LoginParam true "JSON format username and password"
 // @Success 200 {object} errors.impl "ok"
 // @Failure 400 {object} errors.impl "Bad request parameters"
 // @Router /api/v1/pub/users [post]
