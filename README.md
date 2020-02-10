@@ -20,6 +20,7 @@
   - [`JWT-GO`](https://github.com/dgrijalva/jwt-go)
   - [`GO-Redis`](https://github.com/go-redis/redis)
   - [`Go-Dig`](https://github.com/uber-go/dig)
+  - [`logrus`](https://github.com/sirupsen/logrus)
 
 - Refer to the [blog](https://yuxiang660.github.io/little-bee-client/posts/4/2020-02-10---Little-Bee-Server-Intro/) for details.
 
@@ -61,3 +62,6 @@
         ├── store          // 数据库模块，提供接口给Model模块和数据库打交道
         └── store.go       // 数据模块初始化入口
 ```
+
+- Architecture
+![server](https://github.com/yuxiang660/little-bee-server/blob/master/.github/Architecture.png)
