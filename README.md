@@ -65,3 +65,28 @@
 
 - Architecture
 ![server](https://github.com/yuxiang660/little-bee-server/blob/master/.github/Architecture.png)
+
+# Available Scripts
+
+In the project directory, you can run:
+
+### `make`
+
+Runs server in the development mode at port `8181`.<br />
+
+### `go run cmd/server/main.go -c ./configs/config.toml`
+
+Same as `make`. Runs server in the development mode at port `8181`.<br />
+
+### `make build`
+
+Builds the app for production to the `./cmd/server` folder.<br />
+
+### `make doc`
+
+Update Swagger API doc to the `./doc` folder.<br />
+Open [http://localhost:8181/docs](http://localhost:8181/docs) to view it in the browser.<br />
+
+### `make clean`
+
+Clean logs and data.<br />
