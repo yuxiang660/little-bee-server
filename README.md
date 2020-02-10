@@ -8,3 +8,7 @@
 <h4 align="center">
   作者 -- “搬砖蜜蜂”
 </h4>
+
+# Demo
+![Demo](https://github.com/yuxiang660/little-bee-server/blob/master/.github/demo.gif)
+
