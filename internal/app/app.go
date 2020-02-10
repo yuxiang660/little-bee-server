@@ -67,14 +67,18 @@ func handleError(err error) {
 func buildContainer() (*dig.Container, func()) {
 	container := dig.New()
 
-	releaseAuther := InjectAuther(container)
 	releaseStore := InjectStore(container)
 	releaseModel := InjectModel(container)
+	releaseAuther := InjectAuther(container)
 	releaseController := InjectController(container)
 
 	return container, func() {
 		if releaseController != nil {
 			releaseController()
+		}
+
+		if releaseAuther != nil {
+			releaseAuther()
 		}
 
 		if releaseModel != nil {
@@ -83,10 +87,6 @@ func buildContainer() (*dig.Container, func()) {
 
 		if releaseStore != nil {
 			releaseStore()
-		}
-
-		if releaseAuther != nil {
-			releaseAuther()
 		}
 	}
 }
