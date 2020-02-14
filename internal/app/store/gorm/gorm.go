@@ -41,14 +41,14 @@ func SetDBType(DBType string) Option {
 	}
 }
 
-// SetDSN returns an action to set DSN for database connenction.
+// SetDSN returns an action to set DSN for database connection.
 func SetDSN(DSN string) Option {
 	return func(o *options) {
 		o.DSN = DSN
 	}
 }
 
-// SetMaxLifetime returns an action to set max life time for a connenction.
+// SetMaxLifetime returns an action to set max life time for a connection.
 func SetMaxLifetime(maxLifetime int) Option {
 	return func(o *options) {
 		o.maxLifetime = maxLifetime

@@ -16,3 +16,6 @@ doc:
 
 clean:
 	rm -rf $(EXPORT_FOLDER)
+
+test:
+	@go test -cover -race ./...

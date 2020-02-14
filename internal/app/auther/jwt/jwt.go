@@ -63,7 +63,7 @@ func SetStore(strore string) Option {
 	}
 }
 
-// SetDSN returns an action to set dsn string for store connenction.
+// SetDSN returns an action to set dsn string for store connection.
 func SetDSN(dsn string) Option {
 	return func(o *options) {
 		o.dsn = dsn
