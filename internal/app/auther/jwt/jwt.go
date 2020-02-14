@@ -118,7 +118,7 @@ func New(opts ...Option) (auther.Auther, error) {
 	case "redis":
 		db, err = redis.New(redis.SetDSN(o.dsn))
 	default:
-		err = errors.ErrUnknowDatabase
+		err = errors.ErrUnknownDatabase
 	}
 
 	if err != nil {

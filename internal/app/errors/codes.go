@@ -9,7 +9,7 @@ import (
 // If the error is an internal error, the status code refers to "net/http/status.go".
 var (
 	ErrInvalidToken = newInternalError("Invalid Token")
-	ErrUnknowDatabase = newInternalError("Unknow Database")
+	ErrUnknownDatabase = newInternalError("Unknown Database")
 
 	NoError = newHTTPError(http.StatusOK, "OK")
 	ErrNotFound = newHTTPError(http.StatusNotFound, "Not Found")
