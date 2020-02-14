@@ -90,3 +90,8 @@ Open [http://localhost:8181/docs](http://localhost:8181/docs) to view it in the 
 ### `make clean`
 
 Clean logs and data.<br />
+
+### `heroku logs -a little-bee-server --tail`
+
+The server was deployed to `heroku`. View its logs locally with above command. <br />
+Open [https://little-bee-server.herokuapp.com/docs/](https://little-bee-server.herokuapp.com/docs/) to view the API doc from `heroku`. <br />
