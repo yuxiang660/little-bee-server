@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+	"os"
 
 	"github.com/yuxiang660/little-bee-server/internal/app/config"
 	"github.com/yuxiang660/little-bee-server/internal/app/logger"
@@ -19,7 +20,12 @@ func OpenHTTPServer(container *dig.Container) func() {
 	handleError(err)
 
 	cfg := config.Global().HTTP
-	addr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
+	addr := ""
+	if os.Getenv("PORT") != "" {
+		addr = fmt.Sprintf(":%s", os.Getenv("PORT"))
+	} else {
+		addr = fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
+	}
 	srv := &http.Server{
 		Addr: addr,
 		Handler: r,
