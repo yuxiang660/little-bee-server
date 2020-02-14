@@ -19,3 +19,6 @@
 
 # Log files
 *.log
+
+## Diff files
+*.orig
