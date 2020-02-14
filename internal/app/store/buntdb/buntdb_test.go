@@ -1,4 +1,4 @@
-package redis
+package buntdb
 
 import (
 	"testing"
@@ -8,15 +8,11 @@ import (
 )
 
 const (
-	// dsn = "address,password,database number"
-	dsn = "127.0.0.1:6379,,1"
 	expiration = time.Millisecond
-	// redis expiration margin
-	margin = 2
 )
 
-func TestRedis(t *testing.T) {
-	store, err := New(SetDSN(dsn))
+func TestBuntDB(t *testing.T) {
+	store, err := New(SetDSN(":memory:"))
 	assert.Nil(t, err)
 	defer store.Close()
 
@@ -40,7 +36,7 @@ func TestRedis(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, false, isExist)
 
-	time.Sleep(expiration * margin)
+	time.Sleep(expiration)
 	isExist, err = store.Exist(key)
 	assert.Nil(t, err)
 	assert.Equal(t, false, isExist)
