@@ -11,7 +11,7 @@ import (
 	"github.com/yuxiang660/little-bee-server/internal/app/store/buntdb"
 	"github.com/yuxiang660/little-bee-server/internal/app/store/redis"
 	"github.com/yuxiang660/little-bee-server/internal/app/model/schema"
-	jwt "github.com/dgrijalva/jwt-go"
+	ijwt "github.com/dgrijalva/jwt-go"
 )
 
 type options struct {
@@ -75,8 +75,8 @@ type autherJWT struct {
 	tokenType     string
 	expired       int
 	signingKey    interface{}
-	signingMethod jwt.SigningMethod
-	keyfunc       jwt.Keyfunc
+	signingMethod ijwt.SigningMethod
+	keyfunc       ijwt.Keyfunc
 	db            store.NoSQL
 }
 
@@ -92,19 +92,19 @@ func New(opts ...Option) (auther.Auther, error) {
 	a.expired = o.expired
 	a.signingKey = []byte(o.signingKey)
 	
-	var method jwt.SigningMethod
+	var method ijwt.SigningMethod
 	switch o.signingMethod {
 	case "HS256":
-		method = jwt.SigningMethodHS256
+		method = ijwt.SigningMethodHS256
 	case "HS384":
-		method = jwt.SigningMethodHS384
+		method = ijwt.SigningMethodHS384
 	default:
-		method = jwt.SigningMethodHS512
+		method = ijwt.SigningMethodHS512
 	}
 	a.signingMethod = method
 
-	a.keyfunc = func(t *jwt.Token) (interface{}, error) {
-		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+	a.keyfunc = func(t *ijwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*ijwt.SigningMethodHMAC); !ok {
 			return nil, errors.ErrInvalidToken
 		}
 		return []byte(o.signingKey), nil
@@ -135,7 +135,7 @@ func (a *autherJWT) GenerateToken(userID string) (schema.LoginTokenInfo, error) 
 	now := time.Now()
 	expiresAt := now.Add(time.Duration(a.expired) * time.Second).Unix()
 
-	token := jwt.NewWithClaims(a.signingMethod, &jwt.StandardClaims{
+	token := ijwt.NewWithClaims(a.signingMethod, &ijwt.StandardClaims{
 		IssuedAt: now.Unix(),
 		ExpiresAt: expiresAt,
 		NotBefore: now.Unix(),
@@ -154,15 +154,15 @@ func (a *autherJWT) GenerateToken(userID string) (schema.LoginTokenInfo, error) 
 	}, nil
 }
 
-func (a *autherJWT) parseToken(tokenString string) (*jwt.StandardClaims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, a.keyfunc)
+func (a *autherJWT) parseToken(tokenString string) (*ijwt.StandardClaims, error) {
+	token, err := ijwt.ParseWithClaims(tokenString, &ijwt.StandardClaims{}, a.keyfunc)
 	if err != nil {
 		return nil, err
 	} else if !token.Valid {
 		return nil, errors.ErrInvalidToken
 	}
 
-	return token.Claims.(*jwt.StandardClaims), nil
+	return token.Claims.(*ijwt.StandardClaims), nil
 }
 
 // DestroyToken cancels a valid access token after clients logout.
