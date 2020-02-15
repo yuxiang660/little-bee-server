@@ -141,7 +141,7 @@ func (c *Config) IsDebugMode() bool {
 	return c.RunMode == "debug"
 }
 
-// DSN returns DSN string for Gorm database connenction. 
+// DSN returns DSN string for Gorm database connection. 
 func (g Gorm) DSN() string {
 	var dsn string
 
@@ -149,7 +149,7 @@ func (g Gorm) DSN() string {
 	case "sqlite3":
 		dsn = global.Sqlite3.Path
 	default:
-		logger.Error("Unknow Gorm Database")
+		logger.Error("Unknown Gorm Database")
 		return ""
 	}
 

@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
-	gorm "github.com/jinzhu/gorm"
+	igorm "github.com/jinzhu/gorm"
 	"github.com/yuxiang660/little-bee-server/internal/app/errors"
 	"github.com/yuxiang660/little-bee-server/internal/app/store"
 
@@ -70,7 +70,7 @@ func SetMaxIdleConns(maxIdleConns int) Option {
 }
 
 type storeGorm struct {
-	db *gorm.DB
+	db *igorm.DB
 }
 
 // New creates a SQL store object based on user configuration.
@@ -87,7 +87,7 @@ func New(opts ...Option) (store.SQL, error) {
 		return nil, errors.ErrUnknownDatabase
 	}
 
-	db, err := gorm.Open(o.DBType, o.DSN)
+	db, err := igorm.Open(o.DBType, o.DSN)
 	if err != nil {
 		return nil, err
 	}
